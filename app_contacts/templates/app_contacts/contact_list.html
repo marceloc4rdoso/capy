@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <title>Contatos</title> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Gerenciamento de contatos com funcionalidades de adicionar, editar e excluir contatos">
+    <link rel="icon" href=" {% static 'app_contacts/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'app_contacts/style.css' %}">
+</head>
+<body class="body">
+    <!-- Navegação por teclado -->
+    <a href="#main-content" class="sr-only">Pular para o conteúdo principal</a>
+    
+    <!-- Cabeçalho -->
+    <header class="header-section">
+        <h1 id="page-title">Contatos</h1>
+        <a href="{% url 'contact_create' %}" class="add-button" aria-label="Adicionar novo contato">
+            <span aria-hidden="true">+</span>
+            <span>Adicionar</span>
+        </a>
+    </header>
+    
+    <!-- Conteúdo principal -->
+    <main id="main-content">
+        {% if contacts %}
+            <!-- Tabela de contatos -->
+            <table class="contacts-table" role="table" aria-labelledby="page-title">
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Telefone</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for contact in contacts %}
+                    <tr>
+                        <td>
+                            <span aria-label="Nome do contato">{{ contact.name }}</span>
+                        </td>
+                        <td>
+                            <span aria-label="Email do contato">{{ contact.email }}</span>
+                        </td>
+                        <td>
+                            <span aria-label="Telefone do contato">{{ contact.phone }}</span>
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <a href="{% url 'contact_update' contact.pk %}" class="btn btn-edit">Editar</a>    
+                                <a href="{% url 'contact_delete' contact.pk %}" class="btn btn-delete">Excluir</a>
+                                <!--
+                                Esse código seria para utilização de JS para edição e exclusão
+                                <a href="{% url 'contact_update' contact.pk %}" 
+                                   class="btn btn-edit"
+                                   aria-label="Editar contato {{ contact.name }}">
+                                    Editar
+                                </a>
+                                <a href="{% url 'contact_delete' contact.pk %}" 
+                                   class="btn btn-delete"
+                                   aria-label="Excluir contato {{ contact.name }}"
+                                   onclick="return confirm('Tem certeza que deseja excluir o contato {{ contact.name }}?')">
+                                    Excluir
+                                </a>
+                                -->
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <!-- Mensagem quando não há contatos -->
+            <div class="no-contacts" role="status" aria-live="polite">
+                <p>Nenhum contato encontrado.</p>
+                <p>Clique no botão "Adicionar" para cadastrar seu primeiro contato.</p>
+            </div>
+        {% endif %}
+    </main>
+    
+    <!-- Anúncio para leitores de tela sobre atualizações -->
+    <div aria-live="polite" aria-atomic="true" class="sr-only" id="status-announcements"></div>
+    
+    <script src="{% static 'app_contacts/script.js' %}"></script>
+</body>
+</html>

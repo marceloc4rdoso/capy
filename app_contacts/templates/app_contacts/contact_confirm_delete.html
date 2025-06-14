@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contato</title>
+    <link rel="icon" href=" {% static 'app_contacts/favicon.ico' %}">
+    <link rel="stylesheet" href="{% static 'app_contacts/style.css' %}">
+</head>
+<body>
+
+
+<h1 class="header-section h1">Excluir Contato</h1>
+<p>Tem certeza que deseja excluir {{ contact.name }}?</p>
+<form method="post">
+    {% csrf_token %}
+    <button class="btn-delete" type="submit">Confirmar Exclusão</button>  
+</form>
+<a class="add-button" href="{% url 'contact_list' %}">Cancelar</a>
+</body>
+</html> 

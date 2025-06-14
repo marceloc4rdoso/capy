@@ -1,0 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Contato</title>
+    <link rel="icon" href=" {% static 'app_contacts/favicon.ico' %}">    
+    <link rel="stylesheet" href="{% static 'app_contacts/style.css' %}">
+</head>
+<body>
+
+<h1 class="header-section h1">Contato</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="add-button">Salvar</button>
+    <a class="add-button" href="{% url 'contact_list' %}">Cancelar</a>
+</form>
+<a class="add-button" href="{% url 'contact_list' %}">Voltar</a>
+</body>
+</html>
