@@ -19,7 +19,7 @@
 * {
     box-sizing: border-box;
     margin: 0;
-    padding: 0;
+    padding: 10;
 }
 
 body {
@@ -97,6 +97,54 @@ tr:nth-child(even) {
     background-color: #f8f9fa;
     font-weight: 600;
 }
+
+/* Estilo para o formulário */
+.form {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: left;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo para cada grupo de campo */
+.form-group p {
+    margin-bottom: 15px;
+}
+
+/* Estilo para os campos de entrada */
+.form input[type="text"],
+.form input[type="email"],
+.form input[type="tel"],
+.form textarea,
+.form select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* Estilo para os botões */
+.form .add-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    margin-right: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    text-align: center;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+/* Opcional: ao passar o mouse sobre os botões */
+.form .add-button:hover {
+    background-color: #0056b3;
+}
+
 
 .action-buttons {
     display: flex;
