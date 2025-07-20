@@ -1,0 +1,25 @@
+<!-- templates/dashboard.html -->
+{% extends 'base.html' %}
+{% block title %}Dashboard | Sistema de Gestão{% endblock %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <h3>Menu</h3>
+        <ul>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="#">Usuários</a></li>
+            <li><a href="#">Contatos</a></li>
+            <li><a href="#">Compras</a></li>
+            <li><a href="#">Vendas</a></li>
+            <li><a href="{% url 'management_list' %}">Gestão</a></li>
+            <li><a href="#">Configurações</a></li>
+        </ul>
+    </aside>
+    <section class="main-content">
+        <h2>Dashboard Principal</h2>
+        <p>Aqui serão exibidos os principais KPIs e gráficos do sistema de gestão.</p>
+        <!-- Conteúdo do dashboard virá aqui -->
+    </section>
+</div>
+{% endblock %}

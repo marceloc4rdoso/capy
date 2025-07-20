@@ -1,0 +1,87 @@
+<!-- templates/management_list.html -->
+{% extends 'base.html' %}
+{% block title %}{{ title }} | Sistema de Gestão{% endblock %}
+
+{% block content %}
+<div class="management-header">
+    <h1>{{ title }}</h1>
+    <div class="management-actions">
+        <a href="{% url 'user_create' %}" class="btn">Novo Usuário</a>
+        <a href="{% url 'contact_create' %}" class="btn">Novo Contato</a>
+    </div>
+</div>
+
+<!-- Tabela de Usuários -->
+<div class="table-wrapper">
+    <h2>Usuários do Sistema</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Nome Completo</th>
+                <th>E-mail</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.get_full_name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{% if user.is_active %}Ativo{% else %}Inativo{% endif %}</td>
+                <td class="action-buttons">
+                    <a href="{% url 'user_update' user.pk %}" class="btn-edit">Editar</a>
+                    <a href="{% url 'user_delete' user.pk %}" class="btn-delete">Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Nenhum usuário encontrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Tabela de Contatos -->
+<div class="table-wrapper">
+    <h2>Contatos</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Telefone</th>
+                <th>Usuário Associado</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.phone|default:"-" }}</td>
+                <td>
+                    {% if contact.user %}
+                        {{ contact.user.username }}
+                    {% else %}
+                        <span class="text-muted">Nenhum</span>
+                    {% endif %}
+                </td>
+                <td class="action-buttons">
+                    <a href="{% url 'contact_update' contact.pk %}" class="btn-edit">Editar</a>
+                    <a href="{% url 'contact_delete' contact.pk %}" class="btn-delete">Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Nenhum contato encontrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

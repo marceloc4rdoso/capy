@@ -1,0 +1,239 @@
+/* static/css/style.css */
+
+/* --- Geral --- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+    flex-grow: 1;
+}
+
+/* --- Botões --- */
+.btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.btn:hover {
+    background-color: #0056b3;
+}
+.btn-large {
+    padding: 15px 30px;
+    font-size: 1.2em;
+}
+
+/* --- Navbar --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 1rem 5%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.nav-logo a {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 1.5em;
+}
+.nav-menu span {
+    margin-right: 15px;
+}
+
+/* --- Seção de Boas-vindas (Home) --- */
+.welcome-section {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-top: 40px;
+}
+.welcome-section h1 {
+    color: #007bff;
+}
+
+/* --- Layout do Dashboard --- */
+.dashboard-layout {
+    display: flex;
+    gap: 20px;
+}
+.sidebar {
+    flex-basis: 220px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    height: fit-content;
+}
+.sidebar h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar ul li a {
+    display: block;
+    padding: 10px;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.sidebar ul li a:hover {
+    background-color: #f0f0f0;
+}
+.main-content {
+    flex-grow: 1;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* --- Formulário de Login --- */
+.login-form {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+.error-message {
+    color: #d9534f;
+    text-align: center;
+}
+
+/* --- Rodapé --- */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #343a40;
+    color: white;
+    margin-top: auto;
+}
+
+/* --- Estilos para Formulários --- */
+.form-container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.form-container h2 {
+    margin-top: 0;
+    text-align: center;
+}
+.form-container p {
+    line-height: 1.6;
+}
+.form-container .form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.form-actions {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.btn-cancel:hover {
+    background-color: #5a6268;
+}
+.btn-danger {
+    background-color: #dc3545;
+}
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+
+/* --- Estilos para a Página de Gestão e Tabelas --- */
+.management-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.table-wrapper {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+    overflow-x: auto; /* Para responsividade em telas pequenas */
+}
+.table-wrapper h2 {
+    margin-top: 0;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+}
+th {
+    background-color: #f8f9fa;
+}
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+.action-buttons a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 5px;
+    color: white;
+}
+.btn-edit { background-color: #ffc107; }
+.btn-delete { background-color: #dc3545; }
+.text-muted { color: #888; }

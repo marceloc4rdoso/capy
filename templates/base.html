@@ -1,0 +1,43 @@
+<!-- templates/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema de Gestão{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-logo">
+                <a href="{% url 'home' %}">
+                    <!-- Você pode trocar por uma tag <img> com seu logo -->
+                    <strong>CAPY GESTÃO</strong>
+                </a>
+            </div>
+            <div class="nav-menu">
+                {% if user.is_authenticated %}
+                    <span>Olá, {{ user.username }}!</span>
+                    <form class="logout-form" action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn">Sair</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}" class="btn">Entrar</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>© 2026 Capy Gestão. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
