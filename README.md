@@ -34,7 +34,7 @@ Com uma interface limpa e intuitiva, o Capy Gestão permite que a empresa admini
 ## 📸 Pré-visualização
 
 <p align="center">
-  <img src="URL_PARA_UMA_IMAGEM_DO_SEU_PROJETO.png" alt="Screenshot da Lista de Contatos" width="800"/>
+  <img src="[URL_PARA_UMA_IMAGEM_DO_SEU_PROJETO.png](https://drive.google.com/file/d/1xUl415hkW1c_u2lKf4QsbkmyVFv3UqSx/view?usp=drive_link)" alt="Screenshot da Lista de Contatos" width="800"/>
   <br>
   <em>Tela de listagem de contatos com filtros e ações rápidas.</em>
 </p>
