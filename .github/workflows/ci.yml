@@ -1,0 +1,58 @@
+# .github/workflows/ci.yml
+
+# Nome do seu Workflow. Ele aparecerá na aba "Actions" do GitHub.
+name: Django CI
+
+# Define quando a Action deve ser executada.
+on:
+  push:
+    branches: [ "master" ] # Executa quando você envia código para a branch 'main'
+  pull_request:
+    branches: [ "master" ] # Executa quando alguém abre um Pull Request para a 'main'
+
+# Define os "trabalhos" (jobs) que a Action irá realizar.
+jobs:
+  # Nome do nosso job. Você pode ter vários.
+  build:
+    # O tipo de máquina virtual que será usada. 'ubuntu-latest' é a mais comum e gratuita.
+    runs-on: ubuntu-latest
+    
+    # Estratégia para rodar o job em múltiplas versões do Python
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"] # Teste seu projeto em diferentes versões
+
+    # Os passos (comandos) que serão executados sequencialmente.
+    steps:
+      # 1. Pega o código do seu repositório
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configura a versão do Python (de acordo com a 'matrix' acima)
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # 3. Instala as dependências do projeto
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # 4. Verifica a formatação do código com Black
+      # O '--check' não formata, apenas falha se o código não estiver formatado.
+      - name: Lint with Black
+        run: |
+          black . --check
+
+      # 5. Verifica o estilo e erros do código com Flake8
+      - name: Lint with Flake8
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
+
+      # 6. Roda os testes do Django
+      - name: Run Django Tests
+        run: |
+          python manage.py test
