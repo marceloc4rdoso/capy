@@ -41,8 +41,6 @@ Com uma interface limpa e intuitiva, o Capy Gestão permite que a empresa admini
   <em>Tela de listagem de contatos com filtros e ações rápidas.</em>
 </p>
 
-*(Dica: Tire um screenshot da sua aplicação e coloque na raiz do projeto para linkar aqui!)*
-
 ---
 
 ## 🛠️ Tecnologias Utilizadas
