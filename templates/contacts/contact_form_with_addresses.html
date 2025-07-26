@@ -1,0 +1,48 @@
+<!-- templates/contacts/contact_form_with_addresses.html -->
+{% extends 'app_base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block app_content %}
+<div class="form-container" style="max-width: 900px;">
+    <h2>{{ title }}</h2>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        
+        <fieldset>
+            <legend>Dados Principais</legend>
+            {{ form.as_p }}
+        </fieldset>
+
+        <fieldset class="formset-container">
+            <legend>Endereços</legend>
+            {{ address_formset.management_form }} {# ESSENCIAL! #}
+            {% for form in address_formset %}
+                <div class="address-form">
+                    {{ form.id }} {# Campo oculto com o ID do endereço #}
+                    <div class="address-fields">
+                        {{ form.street.label_tag }} {{ form.street }}
+                        {{ form.number.label_tag }} {{ form.number }}
+                        {{ form.complement.label_tag }} {{ form.complement }}
+                        {{ form.neighborhood.label_tag }} {{ form.neighborhood }}
+                        {{ form.city.label_tag }} {{ form.city }}
+                        {{ form.state.label_tag }} {{ form.state }}
+                        {{ form.zip_code.label_tag }} {{ form.zip_code }}
+                    </div>
+                    {% if form.instance.pk %}
+                        <div class="delete-form">
+                            {{ form.DELETE.label_tag }} {{ form.DELETE }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </fieldset>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn">Salvar Alterações</button>
+            <a href="{% url 'contact_detail' object.pk %}" class="btn-cancel">Cancelar</a>
+        </div>
+    </form>
+</div>
+{% endblock app_content %}

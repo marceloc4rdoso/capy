@@ -1,0 +1,49 @@
+<!-- templates/app_base.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="dashboard-layout">
+    <aside class="sidebar">
+        <h3>Menu</h3>
+        <ul>
+            <li>
+                <a href="{% url 'dashboard' %}">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'contact_list' %}">
+                    <i class="fa-solid fa-address-book"></i>
+                    <span>Contatos</span>
+                </a>
+            </li>            
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-shopping-cart"></i>
+                    <span>Compras</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fa-solid fa-tags"></i>
+                    <span>Vendas</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'management_list' %}">
+                    <i class="fa-solid fa-users-gear"></i>
+                    <span>Configurações Gerais</span>
+                </a>
+            </li>
+        </ul>
+    </aside>
+
+    <section class="main-content">
+        {# Este bloco será o conteúdo específico de cada página #}
+        {% block app_content %}
+        {% endblock app_content %}
+    </section>
+</div>
+{% endblock content %}

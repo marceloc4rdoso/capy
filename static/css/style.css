@@ -12,7 +12,7 @@ body {
 }
 .container {
     width: 90%;
-    max-width: 1200px;
+    max-width: 1500px;
     margin: 20px auto;
     flex-grow: 1;
 }
@@ -71,10 +71,14 @@ body {
     display: flex;
     gap: 20px;
 }
+
+/* --- Layout do Sidebar --- */
+
 .sidebar {
+    position: fixed;
     flex-basis: 220px;
     background-color: #fff;
-    padding: 20px;
+    padding: 10px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     height: fit-content;
@@ -89,16 +93,28 @@ body {
     padding: 0;
     margin: 0;
 }
+/* --- Estilos para o Sidebar com Ícones --- */
+
+/* Alinha os itens dentro do link <a> */
 .sidebar ul li a {
-    display: block;
-    padding: 10px;
-    color: #333;
-    text-decoration: none;
-    border-radius: 5px;
+    display: flex; /* Habilita o Flexbox para alinhar itens na horizontal */
+    align-items: center; /* Alinha o ícone e o texto verticalmente no centro */
+    gap: 12px; /* Cria um espaço entre o ícone e o texto */
 }
+
+/* Define uma largura fixa para os ícones para que o texto fique alinhado */
+.sidebar ul li a i {
+    width: 20px; /* Garante que todos os ícones ocupem o mesmo espaço */
+    text-align: center; /* Centraliza o ícone dentro do seu espaço de 20px */
+}
+
+/* Efeito de hover mais suave no item inteiro */
 .sidebar ul li a:hover {
     background-color: #f0f0f0;
+    color: #0056b3; /* Opcional: muda a cor do texto e do ícone no hover */
 }
+
+
 .main-content {
     flex-grow: 1;
     background-color: #fff;
@@ -237,3 +253,97 @@ tbody tr:hover {
 .btn-edit { background-color: #ffc107; }
 .btn-delete { background-color: #dc3545; }
 .text-muted { color: #888; }
+
+/* static/css/style.css */
+
+/* Botão secundário para o filtro de status */
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Estilos para a Paginação */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+.pagination .step-links a {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    margin: 0 2px;
+    color: #007bff;
+}
+.pagination .step-links a:hover {
+    background-color: #f1f1f1;
+}
+.pagination .current {
+    margin: 0 10px;
+    font-weight: bold;
+}
+/* --- Estilos para a Página de Detalhes --- */
+.detail-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+.detail-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.detail-card h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+.address-item p {
+    margin: 5px 0;
+    line-height: 1.4;
+}
+.full-width {
+    grid-column: 1 / -1; /* Faz o card ocupar a largura toda */
+}
+/* --- Estilos para o Formset de Endereços --- */
+.formset-container {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+.formset-container legend {
+    padding: 0 10px;
+    width: auto;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.address-form {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+.address-form:last-child {
+    border-bottom: none;
+}
+.address-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 15px;
+}
+.address-fields .form-control {
+    width: 100%;
+}
+.delete-form {
+    margin-top: 10px;
+    color: #dc3545;
+}

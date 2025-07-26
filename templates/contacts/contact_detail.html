@@ -1,0 +1,58 @@
+<!-- templates/contacts/contact_detail.html -->
+{% extends 'app_base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block app_content %}
+<div class="detail-header">
+    <h1>{{ contact.name }}</h1>
+    <div class="detail-actions">
+        <a href="{% url 'contact_update' contact.pk %}" class="btn">Editar Contato</a>
+        <a href="{% url 'contact_list' %}" class="btn-cancel">Voltar para a Lista</a>
+    </div>
+</div>
+
+<div class="detail-grid">
+    <!-- Card de Informações Principais -->
+    <div class="detail-card">
+        <h3>Informações Principais</h3>
+        <p><strong>Tipo:</strong> {{ contact.get_person_type_display }}</p>
+        <p><strong>CPF/CNPJ:</strong> {{ contact.document|default:"Não informado" }}</p>
+        <p><strong>E-mail:</strong> {{ contact.email }}</p>
+        <p><strong>Telefone:</strong> {{ contact.phone|default:"Não informado" }}</p>
+        <p><strong>Status:</strong> {% if contact.is_active %}Ativo{% else %}Inativo{% endif %}</p>
+        {% if contact.company %}
+        <p><strong>Empresa Associada:</strong> <a href="{% url 'contact_detail' contact.company.pk %}">{{ contact.company.name }}</a></p>
+        {% endif %}
+    </div>
+
+    <!-- Card de Endereços -->
+    <div class="detail-card">
+        <h3>Endereços</h3>
+        {% for address in addresses %}
+            <div class="address-item">
+                <p><strong>{{ address.street }}, {{ address.number }}</strong></p>
+                <p>{{ address.neighborhood }} - {{ address.city }}/{{ address.state }}</p>
+                <p>CEP: {{ address.zip_code }}</p>
+            </div>
+            {% if not forloop.last %}<hr>{% endif %}
+        {% empty %}
+            <p>Nenhum endereço cadastrado.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Card de Contatos Associados (Apenas para PJ) -->
+    {% if contact.person_type == 'PJ' %}
+    <div class="detail-card full-width">
+        <h3>Contatos Associados a esta Empresa</h3>
+        <ul>
+        {% for associated in associated_contacts %}
+            <li><a href="{% url 'contact_detail' associated.pk %}">{{ associated.name }}</a> ({{ associated.email }})</li>
+        {% empty %}
+            <li>Nenhum contato associado.</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock app_content %}

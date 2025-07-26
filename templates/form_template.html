@@ -1,19 +1,17 @@
 <!-- templates/form_template.html -->
-{% extends 'base.html' %}
-{% block title %}{{ title }} | Sistema de Gestão{% endblock %}
+{% extends 'app_base.html' %} {# <<< MUDANÇA IMPORTANTE #}
+{% block title %}{{ title }} | Capy Gestão{% endblock %}
 
-{% block content %}
+{% block app_content %} {# <<< Preenchendo o bloco do app_base #}
 <div class="form-container">
     <h2>{{ title }}</h2>
     <form method="post" novalidate>
         {% csrf_token %}
-        
         {{ form.as_p }}
-
         <div class="form-actions">
             <button type="submit" class="btn">Salvar</button>
-            <a href="{% url 'management_list' %}" class="btn-cancel">Cancelar</a>
+            <a href="{{ success_url }}" class="btn-cancel">Cancelar</a>
         </div>
     </form>
 </div>
-{% endblock %}
+{% endblock app_content %}

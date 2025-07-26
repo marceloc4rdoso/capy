@@ -2,10 +2,21 @@
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .forms import UserCreateForm, UserUpdateForm
 
-SUCCESS_URL = reverse_lazy('management_list')
+SUCCESS_URL = reverse_lazy('user_list')
+
+class UserListView(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'users/user_list.html'
+    context_object_name = 'users'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Lista de Usuários'
+        return context
+
 
 class UserCreateView(LoginRequiredMixin, CreateView):
     model = User
@@ -16,6 +27,7 @@ class UserCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Novo Usuário'
+        context['success_url'] = self.success_url
         return context
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
@@ -27,6 +39,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Editar Usuário'
+        context['success_url'] = self.success_url
         return context
 
 class UserDeleteView(LoginRequiredMixin, DeleteView):
@@ -38,4 +51,5 @@ class UserDeleteView(LoginRequiredMixin, DeleteView):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Confirmar Exclusão'
         context['message'] = f'Atenção! Excluir um usuário é uma ação irreversível. Deseja continuar e excluir {self.object.username}?'
+        context['success_url'] = self.success_url
         return context

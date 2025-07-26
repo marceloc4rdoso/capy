@@ -1,0 +1,71 @@
+<!-- templates/contacts/contact_list.html -->
+{% extends 'app_base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block app_content %}
+<div class="management-header">
+    <h1>{{ title }}</h1>
+    <div class="management-actions">
+        <a href="{% url 'contact_list' %}" class="btn {% if current_status == 'active' %}btn-primary{% else %}btn-secondary{% endif %}">Ativos</a>
+        <a href="{% url 'contact_list' %}?status=inactive" class="btn {% if current_status == 'inactive' %}btn-primary{% else %}btn-secondary{% endif %}">Inativos</a>
+        <a href="{% url 'contact_create' %}" class="btn">Novo Contato</a>
+    </div>
+</div>
+
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Nome / Razão Social</th>
+                <th>Tipo</th>
+                <th>CPF / CNPJ</th>
+                <th>E-mail</th>
+                <th>Empresa Associada</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>                
+                <td><a href="{% url 'contact_detail' contact.pk %}">{{ contact.name }}</a></td>
+                <td>{{ contact.get_person_type_display }}</td> {# Usa o texto legível do choice #}
+                <td>{{ contact.document|default:"-" }}</td>
+                <td>{{ contact.email }}</td>
+                <td>{{ contact.company.name|default:"-" }}</td>
+                <td class="action-buttons">
+                    {# Futuramente, aqui pode ter um botão para "Detalhes" que mostra os endereços #}
+                    <a href="{% url 'contact_update' contact.pk %}" class="btn-edit">Editar</a>
+                    <a href="{% url 'contact_delete' contact.pk %}" class="btn-delete">Excluir</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Nenhum contato encontrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {# Bloco de Paginação (se você ativou o paginate_by na view) #}
+    {% if is_paginated %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">« primeira</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
+                {% endif %}
+
+                <span class="current">
+                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">próxima</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">última »</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+</div>
+{% endblock app_content %}
