@@ -51,6 +51,32 @@ class Contact(models.Model):
         verbose_name_plural = "Contatos"
         ordering = ['name']
 
+    
+
+
+    class OrganizationType(models.TextChoices):
+        SYSTEM_HOLDER = 'HOLDER', 'Gestor do Sistema' # A sua empresa
+        CLIENT = 'CLIENT', 'Cliente'                 # As empresas clientes
+        OTHER = 'OTHER', 'Outro'                     # Outros tipos de contato PJ
+        
+        
+    organization_type = models.CharField(
+        max_length=10,
+        choices=OrganizationType.choices,
+        default=OrganizationType.OTHER,
+        verbose_name="Classificação da Organização",
+        blank=True,
+    )
+    
+    # NOVO CAMPO PARA LOGOMARCA
+    # upload_to='logos/' cria uma subpasta 'logos' dentro da sua pasta 'media'
+    logo = models.ImageField(
+        upload_to='logos/', 
+        null=True, 
+        blank=True, 
+        verbose_name="Logomarca da Empresa"
+    )
+
 class Address(models.Model):
     contact = models.ForeignKey('Contact', related_name='addresses', on_delete=models.CASCADE)
     type_address = models.CharField(
@@ -80,3 +106,4 @@ class Address(models.Model):
         verbose_name = "Endereço"
         verbose_name_plural = "Endereços"
         ordering = ['type_address', 'city', 'neighborhood']
+

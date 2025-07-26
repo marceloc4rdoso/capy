@@ -7,7 +7,7 @@
 {% block app_content %}
 <div class="form-container" style="max-width: 900px;">
     <h2>{{ title }}</h2>
-    <form method="post" novalidate>
+    <form method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         
         <fieldset>
@@ -40,8 +40,8 @@
         </fieldset>
         
         <div class="form-actions">
-            <button type="submit" class="btn">Salvar Alterações</button>
-            <a href="{% url 'contact_detail' object.pk %}" class="btn-cancel">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+            <a href="{% url 'contact_detail' object.pk %}" class="btn btn-cancel">Cancelar</a>
         </div>
     </form>
 </div>

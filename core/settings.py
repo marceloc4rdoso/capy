@@ -44,6 +44,14 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
+# CONFIGURAÇÃO DE CACHE
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -53,7 +61,8 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+                'django.contrib.messages.context_processors.messages',                
+                'core_app.context_processors.system_branding_processor', # Processador de contexto para branding do sistema
             ],
         },
     },
@@ -125,3 +134,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = 'dashboard' # Para onde ir após o login bem-sucedido
 LOGIN_URL = 'login'              # Nome da URL de login
 LOGOUT_REDIRECT_URL = 'home'     # Para onde ir após o logout
+
+

@@ -13,10 +13,15 @@
     <header>
         <nav class="navbar">
             <div class="nav-logo">
-                <a href="{% url 'home' %}">
-                    <!-- Você pode trocar por uma tag <img> com seu logo -->
-                    <strong>CAPY GESTÃO</strong>
-                </a>
+            <!-- LÓGICA DO LOGO DO GESTOR -->
+            <a href="{% url 'home' %}">
+                {% if system_holder_logo %}
+                    <img src="{{ system_holder_logo.url }}" alt="Logo de {{ system_holder_name }}" class="client-logo-img">
+                    <span class="system-name-small">{{ system_holder_name }}</span>
+                {% else %}
+                    <strong>{{ system_holder_name|default:"CAPY GESTÃO" }}</strong>
+                {% endif %}
+            </a>
             </div>
             <div class="nav-menu">
                 {% if user.is_authenticated %}

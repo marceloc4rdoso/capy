@@ -8,8 +8,9 @@ class ContactForm(forms.ModelForm):
     class Meta:
         model = Contact
         fields = [
-            'name', 'email', 'phone', 'person_type', 'document', 
-            'is_active', 'company', 'user'
+            'name', 'email', 'phone', 'person_type', 
+            'organization_type', 'logo',
+            'document', 'is_active', 'company', 'user'
         ]
         
         widgets = {
@@ -21,6 +22,8 @@ class ContactForm(forms.ModelForm):
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'company': forms.Select(attrs={'class': 'form-control'}),
             'user': forms.Select(attrs={'class': 'form-control'}),
+            'organization_type': forms.Select(attrs={'class': 'form-control'}),
+            'logo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
         
         labels = {

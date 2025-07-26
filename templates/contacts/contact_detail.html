@@ -5,10 +5,15 @@
 
 {% block app_content %}
 <div class="detail-header">
-    <h1>{{ contact.name }}</h1>
+    <div class="detail-title-with-logo">
+        {% if contact.logo %}
+            <img src="{{ contact.logo.url }}" alt="Logo de {{ contact.name }}" class="detail-logo-img">
+        {% endif %}
+        <h1>{{ contact.name }}</h1>
+    </div>
     <div class="detail-actions">
-        <a href="{% url 'contact_update' contact.pk %}" class="btn">Editar Contato</a>
-        <a href="{% url 'contact_list' %}" class="btn-cancel">Voltar para a Lista</a>
+        <a href="{% url 'contact_update' contact.pk %}" class="btn btn-edit">Editar Contato</a>
+        <a href="{% url 'contact_list' %}" class="btn btn-cancel">Voltar para a Lista</a>
     </div>
 </div>
 
@@ -16,6 +21,7 @@
     <!-- Card de Informações Principais -->
     <div class="detail-card">
         <h3>Informações Principais</h3>
+        <p><strong>Classificação:</strong> {{ contact.get_organization_type_display }}</p>
         <p><strong>Tipo:</strong> {{ contact.get_person_type_display }}</p>
         <p><strong>CPF/CNPJ:</strong> {{ contact.document|default:"Não informado" }}</p>
         <p><strong>E-mail:</strong> {{ contact.email }}</p>

@@ -6,8 +6,8 @@
 <div class="management-header">
     <h1>{{ title }}</h1>
     <div class="management-actions">
-        <a href="{% url 'user_create' %}" class="btn">Novo Usuário</a>
-        <a href="{% url 'contact_create' %}" class="btn">Novo Contato</a>
+        <a href="{% url 'user_create' %}" class="btn btn-primary">Novo Usuário</a>
+        <a href="{% url 'contact_create' %}" class="btn btn-primary">Novo Contato</a>
     </div>
 </div>
 
@@ -32,8 +32,8 @@
                 <td>{{ user.email }}</td>
                 <td>{% if user.is_active %}Ativo{% else %}Inativo{% endif %}</td>
                 <td class="action-buttons">
-                    <a href="{% url 'user_update' user.pk %}" class="btn-edit">Editar</a>
-                    <a href="{% url 'user_delete' user.pk %}" class="btn-delete">Excluir</a>
+                    <a href="{% url 'user_update' user.pk %}" class="btn btn-edit">Editar</a>
+                    <a href="{% url 'user_delete' user.pk %}" class="btn btn-delete">Excluir</a>
                 </td>
             </tr>
             {% empty %}
@@ -73,7 +73,7 @@
                 </td>
                 <td class="action-buttons">
                     <a href="{% url 'contact_update' contact.pk %}" class="btn-edit">Editar</a>
-                    <a href="{% url 'contact_delete' contact.pk %}" class="btn-delete">Excluir</a>
+                    <a href="{% url 'contact_delete' contact.pk %}" class="btn btn-delete">Excluir</a>
                 </td>
             </tr>
             {% empty %}

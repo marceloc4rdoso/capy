@@ -95,11 +95,39 @@ footer {
 /* --- 4. COMPONENTES DE UI (Botões, Formulários, Tabelas) --- */
 
 /* Tipografia e Links */
+
+/* --- Estilos para Logos Dinâmicos --- */
+
+/* Logo na Navbar */
+
 .nav-logo a {
-    color: var(--color-primary);
-    font-size: 1.5em;
-    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-decoration: none;
+}
+.client-logo-img {
+    max-height: 40px; /* Ajuste a altura máxima do logo */
+    max-width: 150px; /* E a largura máxima */
+    margin-bottom: 4px;
+}
+.system-name-small {
+    font-size: 0.7em;
+    color: var(--color-gray-medium);
+    font-weight: normal;
+}
+
+/* Logo na Página de Detalhes */
+.detail-title-with-logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.detail-logo-img {
+    max-height: 60px;
+    border-radius: 5px;
+    background-color: var(--color-gray-light);
+    padding: 5px;
 }
 .sidebar h3 {
     margin-top: 0;
