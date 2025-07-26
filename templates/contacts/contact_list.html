@@ -7,9 +7,9 @@
 <div class="management-header">
     <h1>{{ title }}</h1>
     <div class="management-actions">
-        <a href="{% url 'contact_list' %}" class="btn {% if current_status == 'active' %}btn-primary{% else %}btn-secondary{% endif %}">Ativos</a>
-        <a href="{% url 'contact_list' %}?status=inactive" class="btn {% if current_status == 'inactive' %}btn-primary{% else %}btn-secondary{% endif %}">Inativos</a>
-        <a href="{% url 'contact_create' %}" class="btn">Novo Contato</a>
+        <a href="{% url 'contact_list' %}" class="btn {% if current_status == 'active' %}btn-primary{% else %}btn btn-primary{% endif %}">Ativos</a>
+        <a href="{% url 'contact_list' %}?status=inactive" class="btn {% if current_status == 'inactive' %}btn-primary{% else %}btn btn-secondary{% endif %}">Inativos</a>
+        <a href="{% url 'contact_create' %}" class="btn btn-primary">Novo Contato</a>
     </div>
 </div>
 
@@ -18,7 +18,7 @@
         <thead>
             <tr>
                 <th>Nome / Razão Social</th>
-                <th>Tipo</th>
+                <!--<th>Tipo</th>-->
                 <th>CPF / CNPJ</th>
                 <th>E-mail</th>
                 <th>Empresa Associada</th>
@@ -29,14 +29,14 @@
             {% for contact in contacts %}
             <tr>                
                 <td><a href="{% url 'contact_detail' contact.pk %}">{{ contact.name }}</a></td>
-                <td>{{ contact.get_person_type_display }}</td> {# Usa o texto legível do choice #}
+                <!--<td>{{ contact.get_person_type_display }}</td> {# Usa o texto legível do choice #}-->
                 <td>{{ contact.document|default:"-" }}</td>
                 <td>{{ contact.email }}</td>
                 <td>{{ contact.company.name|default:"-" }}</td>
                 <td class="action-buttons">
                     {# Futuramente, aqui pode ter um botão para "Detalhes" que mostra os endereços #}
-                    <a href="{% url 'contact_update' contact.pk %}" class="btn-edit">Editar</a>
-                    <a href="{% url 'contact_delete' contact.pk %}" class="btn-delete">Excluir</a>
+                    <a href="{% url 'contact_update' contact.pk %}" class="btn btn-edit">Editar</a>
+                    <a href="{% url 'contact_delete' contact.pk %}" class="btn btn-delete">Excluir</a>
                 </td>
             </tr>
             {% empty %}

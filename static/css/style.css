@@ -1,87 +1,105 @@
-/* static/css/style.css */
+/* ==========================================================================
+   CAPY GESTÃO - Folha de Estilos Principal
+   ========================================================================== */
 
-/* --- Geral --- */
+/* --- 1. DEFINIÇÃO DA PALETA DE CORES E VARIÁVEIS GLOBAIS --- */
+:root {
+    /* Paleta de Cores da Marca */
+    --color-primary: #00a3d9;
+    --color-primary-dark: #0082ad; /* Para efeito hover */
+    --color-secondary: #FF6905;
+    --color-tertiary: #2CE864;
+    --color-quaternary: #032D3F;
+
+    /* Cores Semânticas e de UI */
+    --color-danger: #dc3545;      /* Para ações destrutivas (Excluir) */
+    --color-success: var(--color-tertiary); /* Para ações de sucesso (Salvar) */
+    --color-edit: var(--color-secondary);   /* Para ações de edição */
+    
+    /* Tons de Cinza para UI */
+    --color-gray-dark: #5a6268;   /* Para botões inativos e de cancelamento */
+    --color-gray-medium: #adb5bd;
+    --color-gray-light: #f1faff;  /* Para fundos sutis (hover de tabela, etc) */
+    --color-background-main: #f4f7f6;
+    --color-background-card: #ffffff;
+
+    /* Cores de Texto para Contraste */
+    --text-on-light-bg: var(--color-quaternary); /* Texto principal sobre fundos claros */
+    --text-on-dark-bg: #f0f0f0;  /* Texto claro sobre fundos escuros */
+}
+
+
+/* --- 2. ESTILOS GERAIS E DE CORPO --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     margin: 0;
-    background-color: #f4f7f6;
-    color: #333;
+    background-color: var(--color-background-main);
+    color: var(--text-on-light-bg);
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
+
 .container {
-    width: 90%;
-    max-width: 1500px;
+    width: 98%;
+    max-width: 1800px;
     margin: 20px auto;
     flex-grow: 1;
 }
 
-/* --- Botões --- */
-.btn {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    text-decoration: none;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-.btn:hover {
-    background-color: #0056b3;
-}
-.btn-large {
-    padding: 15px 30px;
-    font-size: 1.2em;
-}
 
-/* --- Navbar --- */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 1rem 5%;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.nav-logo a {
-    text-decoration: none;
-    color: #007bff;
-    font-size: 1.5em;
-}
-.nav-menu span {
-    margin-right: 15px;
-}
-
-/* --- Seção de Boas-vindas (Home) --- */
-.welcome-section {
-    text-align: center;
-    padding: 50px 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    margin-top: 40px;
-}
-.welcome-section h1 {
-    color: #007bff;
-}
-
-/* --- Layout do Dashboard --- */
+/* --- 3. COMPONENTES DE LAYOUT --- */
 .dashboard-layout {
     display: flex;
     gap: 20px;
 }
 
-/* --- Layout do Sidebar --- */
+.main-content {
+    flex-grow: 1;
+}
 
 .sidebar {
-    position: fixed;
     flex-basis: 220px;
-    background-color: #fff;
-    padding: 10px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 20px;
+    align-self: flex-start;
+    background-color: var(--color-background-card);
+    padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    height: fit-content;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-background-card);
+    padding: 1rem 2.5%; /* Reduzido para alinhar com o container */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: var(--color-quaternary);
+    color: var(--text-on-dark-bg);
+    margin-top: auto;
+}
+
+
+/* --- 4. COMPONENTES DE UI (Botões, Formulários, Tabelas) --- */
+
+/* Tipografia e Links */
+.nav-logo a {
+    color: var(--color-primary);
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
 }
 .sidebar h3 {
     margin-top: 0;
@@ -93,140 +111,76 @@ body {
     padding: 0;
     margin: 0;
 }
-/* --- Estilos para o Sidebar com Ícones --- */
-
-/* Alinha os itens dentro do link <a> */
 .sidebar ul li a {
-    display: flex; /* Habilita o Flexbox para alinhar itens na horizontal */
-    align-items: center; /* Alinha o ícone e o texto verticalmente no centro */
-    gap: 12px; /* Cria um espaço entre o ícone e o texto */
-}
-
-/* Define uma largura fixa para os ícones para que o texto fique alinhado */
-.sidebar ul li a i {
-    width: 20px; /* Garante que todos os ícones ocupem o mesmo espaço */
-    text-align: center; /* Centraliza o ícone dentro do seu espaço de 20px */
-}
-
-/* Efeito de hover mais suave no item inteiro */
-.sidebar ul li a:hover {
-    background-color: #f0f0f0;
-    color: #0056b3; /* Opcional: muda a cor do texto e do ícone no hover */
-}
-
-
-.main-content {
-    flex-grow: 1;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-/* --- Formulário de Login --- */
-.login-form {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.login-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
-}
-.form-group {
-    margin-bottom: 15px;
-}
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-.form-group input {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-}
-.error-message {
-    color: #d9534f;
-    text-align: center;
-}
-
-/* --- Rodapé --- */
-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #343a40;
-    color: white;
-    margin-top: auto;
-}
-
-/* --- Estilos para Formulários --- */
-.form-container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 30px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.form-container h2 {
-    margin-top: 0;
-    text-align: center;
-}
-.form-container p {
-    line-height: 1.6;
-}
-.form-container .form-control {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
-.form-actions {
-    margin-top: 20px;
     display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-.btn-cancel {
-    background-color: #6c757d;
-    color: white;
-    padding: 10px 15px;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    color: var(--text-on-light-bg);
     text-decoration: none;
     border-radius: 5px;
+    font-weight: 500;
 }
-.btn-cancel:hover {
-    background-color: #5a6268;
+.sidebar ul li a:hover {
+    background-color: var(--color-gray-light);
+    color: var(--color-primary-dark);
 }
-.btn-danger {
-    background-color: #dc3545;
-}
-.btn-danger:hover {
-    background-color: #c82333;
+.sidebar ul li a i {
+    width: 20px;
+    text-align: center;
 }
 
+/* Botões */
+.btn {
+    display: inline-block;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    transition: background-color 0.2s, color 0.2s;
+}
 
-/* --- Estilos para a Página de Gestão e Tabelas --- */
+.btn-primary { background-color: var(--color-primary); color: white; }
+.btn-primary:hover { background-color: var(--color-primary-dark); }
+
+.btn-save { background-color: var(--color-success); color: var(--color-quaternary); }
+.btn-save:hover { background-color: #27d15b; }
+
+.btn-secondary, .btn-cancel {
+    background-color: var(--color-gray-dark);
+    color: var(--text-on-dark-bg);
+}
+.btn-secondary:hover, .btn-cancel:hover {
+    background-color: #495057;
+}
+
+/* Header de Gerenciamento */
 .management-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
     margin-bottom: 20px;
 }
+.management-header h1 {
+    margin: 0;
+}
+.management-header .management-actions a {
+    margin-left: 5px;
+}
+
+/* Tabelas */
 .table-wrapper {
-    background-color: #fff;
+    background-color: var(--color-background-card);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     margin-bottom: 30px;
-    overflow-x: auto; /* Para responsividade em telas pequenas */
-}
-.table-wrapper h2 {
-    margin-top: 0;
+    overflow-x: auto;
 }
 table {
     width: 100%;
@@ -236,55 +190,67 @@ th, td {
     padding: 12px 15px;
     border-bottom: 1px solid #ddd;
     text-align: left;
+    vertical-align: middle;
 }
 th {
-    background-color: #f8f9fa;
-}
-tbody tr:hover {
-    background-color: #f1f1f1;
-}
-.action-buttons a {
-    text-decoration: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-right: 5px;
-    color: white;
-}
-.btn-edit { background-color: #ffc107; }
-.btn-delete { background-color: #dc3545; }
-.text-muted { color: #888; }
-
-/* static/css/style.css */
-
-/* Botão secundário para o filtro de status */
-.btn-secondary {
-    background-color: #6c757d;
-    color: white;
-}
-.btn-secondary:hover {
-    background-color: #5a6268;
-}
-
-/* Estilos para a Paginação */
-.pagination {
-    margin-top: 20px;
-    text-align: center;
-}
-.pagination .step-links a {
-    text-decoration: none;
-    padding: 5px 10px;
-    border: 1px solid #ddd;
-    margin: 0 2px;
-    color: #007bff;
-}
-.pagination .step-links a:hover {
-    background-color: #f1f1f1;
-}
-.pagination .current {
-    margin: 0 10px;
+    background-color: #f7f9fa;
     font-weight: bold;
 }
-/* --- Estilos para a Página de Detalhes --- */
+tbody tr:hover {
+    background-color: var(--color-gray-light);
+}
+.table-wrapper tbody a:link,
+.table-wrapper tbody a:visited {
+    text-decoration: none;
+    color: var(--text-on-light-bg);
+    font-weight: bold;
+}
+.table-wrapper tbody a:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
+/* Botões de Ação na Tabela */
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.action-buttons a {
+    color: white; /* Garante bom contraste nos botões coloridos */
+    font-weight: normal;
+}
+.btn-edit { background-color: var(--color-edit); }
+.btn-delete { background-color: var(--color-danger); }
+
+
+/* Formulários */
+.form-container, .login-form {
+    max-width: 700px;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: var(--color-background-card);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.form-container h2, .login-form h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+
+/* --- 5. COMPONENTES ESPECÍFICOS --- */
+
+/* Página de Detalhes */
 .detail-header {
     display: flex;
     justify-content: space-between;
@@ -297,7 +263,7 @@ tbody tr:hover {
     gap: 20px;
 }
 .detail-card {
-    background: #fff;
+    background: var(--color-background-card);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -307,14 +273,11 @@ tbody tr:hover {
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
 }
-.address-item p {
-    margin: 5px 0;
-    line-height: 1.4;
-}
 .full-width {
-    grid-column: 1 / -1; /* Faz o card ocupar a largura toda */
+    grid-column: 1 / -1;
 }
-/* --- Estilos para o Formset de Endereços --- */
+
+/* Formset de Endereços */
 .formset-container {
     border: 1px solid #ddd;
     padding: 20px;
@@ -334,16 +297,5 @@ tbody tr:hover {
 }
 .address-form:last-child {
     border-bottom: none;
-}
-.address-fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 15px;
-}
-.address-fields .form-control {
-    width: 100%;
-}
-.delete-form {
-    margin-top: 10px;
-    color: #dc3545;
+    margin-bottom: 0;
 }
