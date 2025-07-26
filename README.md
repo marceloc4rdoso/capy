@@ -119,7 +119,7 @@ O Capy Gestão é um projeto em constante evolução. Os próximos passos planej
 *   [ ] Testes automatizados para garantir a estabilidade do código.
 *   [ ] Implantação em um ambiente de produção (usando Gunicorn, Nginx, etc.).
 
-Essas tasks já estão na seção ISSUES aqui no projeto, sinta-se avontade para contribuir
+Essas tasks já estão na seção ISSUES aqui no projeto, sinta-se à vontade para contribuir
 
 ---
 
