@@ -6,18 +6,33 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contacts', '0002_alter_contact_options_contact_company_and_more'),
+        ("contacts", "0002_alter_contact_options_contact_company_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='contact',
-            name='logo',
-            field=models.ImageField(blank=True, null=True, upload_to='logos/', verbose_name='Logomarca da Empresa'),
+            model_name="contact",
+            name="logo",
+            field=models.ImageField(
+                blank=True,
+                null=True,
+                upload_to="logos/",
+                verbose_name="Logomarca da Empresa",
+            ),
         ),
         migrations.AddField(
-            model_name='contact',
-            name='organization_type',
-            field=models.CharField(blank=True, choices=[('HOLDER', 'Gestor do Sistema'), ('CLIENT', 'Cliente'), ('OTHER', 'Outro')], default='OTHER', max_length=10, verbose_name='Classificação da Organização'),
+            model_name="contact",
+            name="organization_type",
+            field=models.CharField(
+                blank=True,
+                choices=[
+                    ("HOLDER", "Gestor do Sistema"),
+                    ("CLIENT", "Cliente"),
+                    ("OTHER", "Outro"),
+                ],
+                default="OTHER",
+                max_length=10,
+                verbose_name="Classificação da Organização",
+            ),
         ),
     ]
