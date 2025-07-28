@@ -1,4 +1,6 @@
 # 🚀 Capy Gestão: Sistema de Gestão Empresarial
+## Curso Programação Python com Framework (Djnago) Senai
+### Turma: PYFRAME 2506SG
 
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python)
 ![Django](https://img.shields.io/badge/Django-5.2-092E20?style=for-the-badge&logo=django)
@@ -38,8 +40,6 @@ Com uma interface limpa e intuitiva, o Capy Gestão permite que a empresa admini
   <br>
   <em>Tela de listagem de contatos com filtros e ações rápidas.</em>
 </p>
-
-*(Dica: Tire um screenshot da sua aplicação e coloque na raiz do projeto para linkar aqui!)*
 
 ---
 
@@ -118,6 +118,8 @@ O Capy Gestão é um projeto em constante evolução. Os próximos passos planej
 *   [ ] Validação de documentos (CPF/CNPJ) no backend.
 *   [ ] Testes automatizados para garantir a estabilidade do código.
 *   [ ] Implantação em um ambiente de produção (usando Gunicorn, Nginx, etc.).
+
+Essas tasks já estão na seção ISSUES aqui no projeto, sinta-se à vontade para contribuir
 
 ---
 
