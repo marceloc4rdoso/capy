@@ -8,12 +8,16 @@ class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
         # Adicionamos os campos de totais
-        fields = ['contact', 'notes', 'discount', 'additions']
+        fields = ["contact", "notes", "discount", "additions"]
         widgets = {
-            'contact': forms.Select(attrs={'class': 'form-control'}),
-            'notes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'discount': forms.NumberInput(attrs={'class': 'form-control total-field', 'id': 'discount'}),
-            'additions': forms.NumberInput(attrs={'class': 'form-control total-field', 'id': 'additions'}),
+            "contact": forms.Select(attrs={"class": "form-control"}),
+            "notes": forms.Textarea(attrs={"class": "form-control", "rows": 3}),
+            "discount": forms.NumberInput(
+                attrs={"class": "form-control total-field", "id": "discount"}
+            ),
+            "additions": forms.NumberInput(
+                attrs={"class": "form-control total-field", "id": "additions"}
+            ),
         }
 
 
