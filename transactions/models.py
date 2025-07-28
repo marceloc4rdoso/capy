@@ -5,54 +5,55 @@ from django.dispatch import receiver
 from contacts.models import Contact
 from inventory.models import Item
 
+
 class Transaction(models.Model):
     class TransactionType(models.TextChoices):
-        SALE = 'SALE', 'Venda'       # Gera receita, diminui estoque
-        PURCHASE = 'PURCHASE', 'Compra' # Gera despesa, aumenta estoque
-        
+        SALE = "SALE", "Venda"  # Gera receita, diminui estoque
+        PURCHASE = "PURCHASE", "Compra"  # Gera despesa, aumenta estoque
+
     transaction_type = models.CharField(
-        max_length=10, 
-        choices=TransactionType.choices,
-        verbose_name="Tipo de Transação"
+        max_length=10, choices=TransactionType.choices, verbose_name="Tipo de Transação"
     )
     contact = models.ForeignKey(
-        Contact, 
-        on_delete=models.PROTECT, # Proíbe deletar um contato que tem transações
-        verbose_name="Contato (Cliente/Fornecedor)"
+        Contact,
+        on_delete=models.PROTECT,  # Proíbe deletar um contato que tem transações
+        verbose_name="Contato (Cliente/Fornecedor)",
     )
-    transaction_date = models.DateTimeField(auto_now_add=True, verbose_name="Data da Transação")
+    transaction_date = models.DateTimeField(
+        auto_now_add=True, verbose_name="Data da Transação"
+    )
     total_value = models.DecimalField(
-        max_digits=12, 
-        decimal_places=2, 
-        default=0.00, 
-        verbose_name="Valor Total"
+        max_digits=12, decimal_places=2, default=0.00, verbose_name="Valor Total"
     )
     notes = models.TextField(blank=True, null=True, verbose_name="Observações")
 
     def __str__(self):
         return f"{self.get_transaction_type_display()} #{self.pk} - {self.contact.name}"
-    
+
     def update_total_value(self):
         """Calcula o valor total a partir dos itens e salva."""
         total = sum(item.total_price for item in self.items.all())
         self.total_value = total
-        self.save(update_fields=['total_value'])
+        self.save(update_fields=["total_value"])
 
     class Meta:
         verbose_name = "Transação"
         verbose_name_plural = "Transações"
-        ordering = ['-transaction_date']
+        ordering = ["-transaction_date"]
+
 
 class TransactionItem(models.Model):
     transaction = models.ForeignKey(
-        Transaction, 
-        related_name='items', 
-        on_delete=models.CASCADE
+        Transaction, related_name="items", on_delete=models.CASCADE
     )
     item = models.ForeignKey(Item, on_delete=models.PROTECT, verbose_name="Item")
-    quantity = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Quantidade")
-    unit_price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Preço Unitário")
-    
+    quantity = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name="Quantidade"
+    )
+    unit_price = models.DecimalField(
+        max_digits=10, decimal_places=2, verbose_name="Preço Unitário"
+    )
+
     @property
     def total_price(self):
         return self.quantity * self.unit_price
@@ -64,6 +65,7 @@ class TransactionItem(models.Model):
         verbose_name = "Item da Transação"
         verbose_name_plural = "Itens da Transação"
 
+
 # --- Sinal para atualizar o estoque ---
 # Usamos um "sinal" do Django para executar uma ação APÓS um item ser salvo.
 @receiver(post_save, sender=TransactionItem)
@@ -74,19 +76,25 @@ def update_stock_on_save(sender, instance, created, **kwargs):
     """
     item = instance.item
     transaction = instance.transaction
-    
-    if item.item_type == 'PROD': # Só atualiza estoque para produtos
+
+    if item.item_type == "PROD":  # Só atualiza estoque para produtos
         # Lógica para recalcular estoque (um pouco complexa para evitar erros)
         # Uma abordagem simples: recalcular tudo a partir do zero
         total_purchased = sum(
-            ti.quantity for ti in TransactionItem.objects.filter(item=item, transaction__transaction_type='PURCHASE')
+            ti.quantity
+            for ti in TransactionItem.objects.filter(
+                item=item, transaction__transaction_type="PURCHASE"
+            )
         )
         total_sold = sum(
-            ti.quantity for ti in TransactionItem.objects.filter(item=item, transaction__transaction_type='SALE')
+            ti.quantity
+            for ti in TransactionItem.objects.filter(
+                item=item, transaction__transaction_type="SALE"
+            )
         )
         item.stock_quantity = total_purchased - total_sold
-        item.save(update_fields=['stock_quantity'])
+        item.save(update_fields=["stock_quantity"])
 
     # Atualiza o valor total da transação pai
-    if created: # Faz isso apenas na criação para evitar loops
+    if created:  # Faz isso apenas na criação para evitar loops
         transaction.update_total_value()
