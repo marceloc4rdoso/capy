@@ -3,6 +3,9 @@
 {% block title %}{{ title }} | Sistema de Gestão{% endblock %}
 
 {% block content %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <div class="management-header">
     <h1>{{ title }}</h1>
     <div class="management-actions">
@@ -12,9 +15,9 @@
 </div>
 
 <!-- Tabela de Usuários -->
-<div class="table-wrapper">
+<div class="table-container">
     <h2>Usuários do Sistema</h2>
-    <table>
+    <table class="styled-table">
         <thead>
             <tr>
                 <th>Username</th>
@@ -31,9 +34,16 @@
                 <td>{{ user.get_full_name }}</td>
                 <td>{{ user.email }}</td>
                 <td>{% if user.is_active %}Ativo{% else %}Inativo{% endif %}</td>
-                <td class="action-buttons">
-                    <a href="{% url 'user_update' user.pk %}" class="btn btn-edit">Editar</a>
-                    <a href="{% url 'user_delete' user.pk %}" class="btn btn-delete">Excluir</a>
+                <td>
+                    <div class="action-buttons">
+                        </a>
+                        <a href="{% url 'user_update' user.pk %}" class="btn btn-edit">
+                            <i class="fas fa-pen"></i> Editar
+                        </a>
+                        <a href="{% url 'user_delete' user.pk %}" class="btn btn-delete">
+                            <i class="fas fa-trash"></i> Excluir
+                        </a>
+                    </div>
                 </td>
             </tr>
             {% empty %}
@@ -46,9 +56,9 @@
 </div>
 
 <!-- Tabela de Contatos -->
-<div class="table-wrapper">
+<div class="table-container">
     <h2>Contatos</h2>
-    <table>
+    <table class="styled-table">
         <thead>
             <tr>
                 <th>Nome</th>
@@ -71,9 +81,15 @@
                         <span class="text-muted">Nenhum</span>
                     {% endif %}
                 </td>
-                <td class="action-buttons">
-                    <a href="{% url 'contact_update' contact.pk %}" class="btn-edit">Editar</a>
-                    <a href="{% url 'contact_delete' contact.pk %}" class="btn btn-delete">Excluir</a>
+                <td>
+                    <div class="action-buttons">
+                        <a href="{% url 'contact_update' contact.pk %}" class="btn btn-edit">
+                            <i class="fas fa-pen"></i> Editar
+                        </a>
+                        <a href="{% url 'contact_delete' contact.pk %}" class="btn btn-delete">
+                            <i class="fas fa-trash"></i> Excluir
+                        </a>
+                    </div>
                 </td>
             </tr>
             {% empty %}

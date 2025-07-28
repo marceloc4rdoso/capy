@@ -1,6 +1,10 @@
 /* ==========================================================================
    CAPY GESTÃO - Folha de Estilos Principal
    ========================================================================== */
+   
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* --- 1. DEFINIÇÃO DA PALETA DE CORES E VARIÁVEIS GLOBAIS --- */
 :root {
@@ -20,7 +24,7 @@
     --color-gray-dark: #5a6268;   /* Para botões inativos e de cancelamento */
     --color-gray-medium: #adb5bd;
     --color-gray-light: #f1faff;  /* Para fundos sutis (hover de tabela, etc) */
-    --color-background-main: #f4f7f6;
+    --color-background-main: #f8f9fa;
     --color-background-card: #ffffff;
 
     /* Cores de Texto para Contraste */
@@ -202,14 +206,7 @@ footer {
 }
 
 /* Tabelas */
-.table-wrapper {
-    background-color: var(--color-background-card);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    margin-bottom: 30px;
-    overflow-x: auto;
-}
+
 table {
     width: 100%;
     border-collapse: collapse;
@@ -227,29 +224,105 @@ th {
 tbody tr:hover {
     background-color: var(--color-gray-light);
 }
-.table-wrapper tbody a:link,
-.table-wrapper tbody a:visited {
-    text-decoration: none;
-    color: var(--text-on-light-bg);
-    font-weight: bold;
+
+/* Tabela Estilizada */
+
+.table-container {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #f8f9fa;
 }
-.table-wrapper tbody a:hover {
-    color: var(--color-primary-dark);
-    text-decoration: underline;
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
+.styled-table thead {
+  background-color: #e9ecef; /* fundo claro */
+  color: #212529; /* texto escuro */
+}
+
+.styled-table th,
+.styled-table td {
+  padding: 0.4rem 0.75rem; /* altura reduzida */
+  text-align: left;
+  vertical-align: middle;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.styled-table tbody tr:nth-child(even) {
+  background-color: #f1f3f5;
+}
+
+.styled-table tbody tr:hover {
+  background-color: #e9ecef;
+  transition: background-color 0.2s ease-in-out;
+}
+/* Estilo para links NÃO VISITADOS dentro da tabela */
+.styled-table tbody a:link {
+    color: var(--text-on-light-bg); /* Cor principal do texto (seu azul quaternário) */
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+/* Estilo para links JÁ VISITADOS dentro da tabela */
+.styled-table tbody a:visited {
+    color: var(--color-gray-dark);  /* Usa o cinza escuro para indicar que foi visitado */
+    text-decoration: none;
+    font-weight: 500;
+}
+/* Efeito ao passar o mouse (se aplica a ambos os estados, visitado ou não) */
+.styled-table tbody a:hover {
+    color: var(--color-primary); /* Muda para a cor primária da marca no hover */
+    text-decoration: underline;  /* Adiciona sublinhado no hover para clareza */
+}
+
+
 /* Botões de Ação na Tabela */
-.action-buttons {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+/* Ações empilhadas (botões) */
+.styled-table td .action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
 }
-.action-buttons a {
-    color: white; /* Garante bom contraste nos botões coloridos */
-    font-weight: normal;
+
+.styled-table td .action-buttons button {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.7rem;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
-.btn-edit { background-color: var(--color-edit); }
-.btn-delete { background-color: var(--color-danger); }
+
+/* Botão de Editar */
+.styled-table td .action-buttons button.edit {
+  background-color: var(--color-edit);
+}
+.styled-table td .action-buttons button.edit:hover {
+  background-color: #cc5704;
+}
+
+/* Botão de Excluir */
+.styled-table td .action-buttons button.delete {
+  background-color: var(--color-danger);
+}
+.styled-table td .action-buttons button.delete:hover {
+  background-color: #b02a37;
+}
+
 
 
 /* Formulários */
@@ -326,4 +399,69 @@ tbody tr:hover {
 .address-form:last-child {
     border-bottom: none;
     margin-bottom: 0;
+}
+
+/* ==========================================================================
+   MELHORIAS DE UI - Links de Tabela e Botões de Ação Globais
+   ========================================================================== */
+
+/* --- 1. AJUSTE NOS LINKS DA TABELA --- */
+/* Remove o sublinhado e a cor azul/roxa padrão dos links na tabela */
+.table-wrapper tbody a:link,
+.table-wrapper tbody a:visited {
+    color: var(--text-on-light-bg); /* Usa a cor de texto principal definida nas variáveis */
+    text-decoration: none;         /* Remove o sublinhado */
+    font-weight: 500;              /* Deixa a fonte um pouco mais encorpada */
+    transition: color 0.2s;
+}
+
+/* Adiciona um feedback visual sutil ao passar o mouse */
+.table-wrapper tbody a:hover {
+    color: var(--color-primary);   /* Muda a cor para a primária da marca no hover */
+    text-decoration: none;
+}
+
+
+/* --- 2. NOVOS BOTÕES DE AÇÃO COM ÍCONES (GLOBAL) --- */
+
+/* Classe base para todos os botões de ícone */
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;  /* Largura fixa */
+    height: 32px; /* Altura fixa */
+    padding: 0;
+    border-radius: 50%; /* Deixa os botões redondos */
+    text-decoration: none;
+    color: white; /* Cor do ícone */
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-icon:hover {
+    transform: scale(1.1); /* Efeito de zoom sutil no hover */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.btn-icon i {
+    font-size: 14px; /* Tamanho do ícone */
+}
+
+/* Modificadores de cor para cada tipo de ação */
+.btn-icon-edit {
+    background-color: var(--color-edit); /* Laranja da sua paleta */
+}
+.btn-icon-delete {
+    background-color: var(--color-danger); /* Vermelho (mantido por UX) */
+}
+.btn-icon-details {
+    background-color: var(--color-primary); /* Azul para detalhes/visualizar */
+}
+
+/* Ajusta o container dos botões na tabela para alinhamento horizontal */
+.action-buttons {
+    flex-direction: row; /* Alinha os botões lado a lado */
+    gap: 8px;            /* Espaçamento entre os botões */
 }

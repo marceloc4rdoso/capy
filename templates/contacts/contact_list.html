@@ -13,15 +13,14 @@
     </div>
 </div>
 
-<div class="table-wrapper">
-    <table>
+<div class="table-container">
+    <table class="styled-table">
         <thead>
             <tr>
                 <th>Nome / Razão Social</th>
                 <!--<th>Tipo</th>-->
                 <th>CPF / CNPJ</th>
                 <th>E-mail</th>
-                <th>Empresa Associada</th>
                 <th>Ações</th>
             </tr>
         </thead>
@@ -29,14 +28,18 @@
             {% for contact in contacts %}
             <tr>                
                 <td><a href="{% url 'contact_detail' contact.pk %}">{{ contact.name }}</a></td>
-                <!--<td>{{ contact.get_person_type_display }}</td> {# Usa o texto legível do choice #}-->
                 <td>{{ contact.document|default:"-" }}</td>
                 <td>{{ contact.email }}</td>
-                <td>{{ contact.company.name|default:"-" }}</td>
                 <td class="action-buttons">
-                    {# Futuramente, aqui pode ter um botão para "Detalhes" que mostra os endereços #}
-                    <a href="{% url 'contact_update' contact.pk %}" class="btn btn-edit">Editar</a>
-                    <a href="{% url 'contact_delete' contact.pk %}" class="btn btn-delete">Excluir</a>
+                    <!-- Botão de Editar com Ícone -->
+						<a href="{% url 'contact_update' contact.pk %}" class="btn-icon btn-icon-edit" title="Editar Contato">
+							<i class="fa-solid fa-pencil"></i>
+						</a>
+						
+					<!-- Botão de Excluir com Ícone -->
+						<a href="{% url 'contact_delete' contact.pk %}" class="btn-icon btn-icon-delete" title="Excluir Contato">
+							<i class="fa-solid fa-trash-can"></i>
+						</a>
                 </td>
             </tr>
             {% empty %}

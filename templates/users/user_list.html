@@ -9,10 +9,10 @@
         <div class="management-actions">
             <a href="{% url 'user_create' %}" class="btn">Novo Usuário</a>
         </div>
-    </div>
+    </div>	
 
-    <div class="table-wrapper">
-        <table>
+    <div class="table-container">
+        <table class="styled-table">
             <!-- O conteúdo da tabela permanece exatamente o mesmo -->
             <thead>
                 <tr>
@@ -31,8 +31,14 @@
                     <td>{{ user.email }}</td>
                     <td>{% if user.is_active %}Ativo{% else %}Inativo{% endif %}</td>
                     <td class="action-buttons">
-                        <a href="{% url 'user_update' user.pk %}" class="btn-edit">Editar</a>
-                        <a href="{% url 'user_delete' user.pk %}" class="btn-delete">Excluir</a>
+                         <!-- Botão de Editar com Ícone -->
+							<a href="{% url 'user_update' user.pk %}" class="btn-icon btn-icon-edit" title="Editar Usuário">
+								<i class="fa-solid fa-pencil"></i>
+							</a>
+						<!-- Botão de Excluir com Ícone -->
+							<a href="{% url 'user_delete' user.pk %}" class="btn-icon btn-icon-delete" title="Excluir Usuário">
+								<i class="fa-solid fa-trash-can"></i>
+							</a>
                     </td>
                 </tr>
                 {% empty %}
