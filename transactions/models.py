@@ -29,12 +29,19 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.get_transaction_type_display()} #{self.pk} - {self.contact.name}"
+    
+    subtotal = models.DecimalField(max_digits=12, decimal_places=2, default=0.00, verbose_name="Subtotal")
+    discount = models.DecimalField(max_digits=12, decimal_places=2, default=0.00, verbose_name="Desconto")
+    additions = models.DecimalField(max_digits=12, decimal_places=2, default=0.00, verbose_name="Acréscimos")
+    total_value = models.DecimalField(max_digits=12, decimal_places=2, default=0.00, verbose_name="Valor Total")
 
-    def update_total_value(self):
-        """Calcula o valor total a partir dos itens e salva."""
-        total = sum(item.total_price for item in self.items.all())
-        self.total_value = total
-        self.save(update_fields=["total_value"])
+    def update_totals(self):
+        """Calcula o subtotal a partir dos itens e o total final."""
+        subtotal_val = sum(item.total_price for item in self.items.all())
+        self.subtotal = subtotal_val
+        self.total_value = (self.subtotal - self.discount) + self.additions
+        self.save(update_fields=['subtotal', 'total_value'])
+    
 
     class Meta:
         verbose_name = "Transação"

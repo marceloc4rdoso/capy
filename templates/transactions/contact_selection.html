@@ -1,0 +1,40 @@
+{% extends 'app_base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block app_content %}
+<div class="management-header">
+    <h1>{{ title }}</h1>
+</div>
+<div class="table-wrapper">
+    <form method="get" class="mb-4">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="Buscar por nome ou documento..." value="{{ request.GET.q }}">
+            <button class="btn btn-primary" type="submit">Buscar</button>
+        </div>
+    </form>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome / Razão Social</th>
+                <th>Documento</th>
+                <th>E-mail</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.document|default:"-" }}</td>
+                <td>{{ contact.email }}</td>
+                <td>
+                    <a href="{% url 'transaction_create' transaction_type=transaction_type contact_pk=contact.pk %}" class="btn btn-primary">Selecionar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="4">Nenhum contato encontrado.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -2,38 +2,125 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block app_content %}
-<form method="post" class="form-container" style="max-width: 900px;">
+<form method="post" class="form-container" style="max-width: 1200px;">
     {% csrf_token %}
     <h2>{{ title }}</h2>
 
-    <fieldset>
-        <legend>Dados da Transação</legend>
-        {{ form.as_p }}
+    <!-- Card de Informações do Contato -->
+    <div class="detail-card mb-4">
+        <h3>{{ transaction_type|slice:":-1"|capfirst }} Para: {{ contact.name }}</h3>
+        <p><strong>Documento:</strong> {{ contact.document|default:"-" }} | <strong>E-mail:</strong> {{ contact.email }} | <strong>Telefone:</strong> {{ contact.phone|default:"-" }}</p>
+        {% with contact.addresses.first as address %}
+            {% if address %}
+            <p><strong>Endereço:</strong> {{ address.street }}, {{ address.number }} - {{ address.city }}/{{ address.state }}</p>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Grade de Itens -->
+    <fieldset class="formset-container">
+        <legend>Itens da Transação</legend>
+        {{ formset.management_form }}
+        <div id="item-formset">
+            {% for form in formset %}
+            <div class="address-form item-row">
+                {{ form.id }}
+                <div class="address-fields" style="grid-template-columns: 3fr 1fr 1fr 1fr 0.5fr;">
+                    <div class="form-group">{{ form.item }}</div>
+                    <div class="form-group">{{ form.quantity }}</div>
+                    <div class="form-group">{{ form.unit_price }}</div>
+                    <div class="form-group"><input type="text" class="form-control item-total" readonly></div>
+                    <div class="form-group delete-form">{% if form.instance.pk %}{{ form.DELETE }}{% endif %}</div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <button type="button" id="add-item-btn" class="btn btn-secondary mt-2">Adicionar Item</button>
     </fieldset>
 
-    <fieldset class="formset-container">
-        <legend>Itens</legend>
-        {{ formset.management_form }}
-        {% for form in formset %}
-        <div class="address-form">
-            {{ form.id }}
-            <div class="address-fields">
-                <div class="form-group">{{ form.item.label_tag }} {{ form.item }}</div>
-                <div class="form-group">{{ form.quantity.label_tag }} {{ form.quantity }}</div>
-                <div class="form-group">{{ form.unit_price.label_tag }} {{ form.unit_price }}</div>
-            </div>
-            {% if form.instance.pk %}
-            <div class="delete-form">
-                {{ form.DELETE.label_tag }} {{ form.DELETE }}
-            </div>
-            {% endif %}
+    <!-- Seção de Totais -->
+    <div class="totals-section mt-4">
+        <div class="form-group">
+            <label for="subtotal">Subtotal</label>
+            <input type="text" id="subtotal" class="form-control" readonly>
         </div>
-        {% endfor %}
-    </fieldset>
+        <div class="form-group">{{ form.discount.label_tag }} {{ form.discount }}</div>
+        <div class="form-group">{{ form.additions.label_tag }} {{ form.additions }}</div>
+        <div class="form-group">
+            <label for="grand-total">Total Geral</label>
+            <input type="text" id="grand-total" class="form-control" readonly>
+        </div>
+    </div>
+    
+    {{ form.notes }}
 
     <div class="form-actions">
-        <button type="submit" class="btn btn-save">Salvar</button>
-        <a href="{% url 'transaction_list' transaction_type=transaction_type %}" class="btn btn-cancel">Cancelar</a>
+        <button type="submit" class="btn btn-save">Finalizar {{ transaction_type|slice:":-1"|capfirst }}</button>
+        <a href="{% url 'contact_selection' transaction_type=transaction_type %}" class="btn-cancel">Cancelar</a>
     </div>
 </form>
+
+<!-- Template para novos itens (usado pelo JS) -->
+<div id="empty-form" style="display: none;">
+    <div class="address-form item-row">
+        {{ formset.empty_form.id }}
+        <div class="address-fields" style="grid-template-columns: 3fr 1fr 1fr 1fr 0.5fr;">
+            <div class="form-group">{{ formset.empty_form.item }}</div>
+            <div class="form-group">{{ formset.empty_form.quantity }}</div>
+            <div class="form-group">{{ formset.empty_form.unit_price }}</div>
+            <div class="form-group"><input type="text" class="form-control item-total" readonly></div>
+            <div class="form-group delete-form"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const formsetContainer = document.querySelector('#item-formset');
+    const addItemBtn = document.querySelector('#add-item-btn');
+    const totalForms = document.querySelector('#id_items-TOTAL_FORMS');
+    const emptyFormTemplate = document.querySelector('#empty-form').innerHTML;
+
+    function updateCalculations() {
+        let subtotal = 0;
+        document.querySelectorAll('.item-row').forEach(row => {
+            const quantity = parseFloat(row.querySelector('input[name*="quantity"]').value) || 0;
+            const price = parseFloat(row.querySelector('input[name*="unit_price"]').value) || 0;
+            const itemTotal = quantity * price;
+            row.querySelector('.item-total').value = itemTotal.toFixed(2);
+            subtotal += itemTotal;
+        });
+
+        const discount = parseFloat(document.querySelector('#discount').value) || 0;
+        const additions = parseFloat(document.querySelector('#additions').value) || 0;
+        const grandTotal = (subtotal - discount) + additions;
+
+        document.querySelector('#subtotal').value = subtotal.toFixed(2);
+        document.querySelector('#grand-total').value = grandTotal.toFixed(2);
+    }
+
+    formsetContainer.addEventListener('input', function(e) {
+        if (e.target.matches('input[name*="quantity"], input[name*="unit_price"]')) {
+            updateCalculations();
+        }
+    });
+
+    document.querySelector('.totals-section').addEventListener('input', function(e) {
+        if (e.target.matches('#discount, #additions')) {
+            updateCalculations();
+        }
+    });
+
+    addItemBtn.addEventListener('click', function() {
+        const newFormHtml = emptyFormTemplate.replace(/__prefix__/g, totalForms.value);
+        const newFormNode = document.createElement('div');
+        newFormNode.innerHTML = newFormHtml;
+        formsetContainer.appendChild(newFormNode.firstChild);
+        totalForms.value = parseInt(totalForms.value) + 1;
+    });
+
+    // Initial calculation on page load
+    updateCalculations();
+});
+</script>
 {% endblock %}
