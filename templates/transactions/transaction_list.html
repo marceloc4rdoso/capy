@@ -1,0 +1,39 @@
+{% extends 'app_base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block app_content %}
+<div class="management-header">
+    <h1>{{ title }}</h1>
+    <a href="{% url 'transaction_create' transaction_type=transaction_type %}" class="btn btn-primary">Nova {{ transaction_type|slice:":-1"|capfirst }}</a>
+</div>
+<div class="table-container">
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente/Fornecedor</th>
+                <th>Data</th>
+                <th>Valor Total</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transactions %}
+            <tr>
+                <td>#{{ transaction.pk }}</td>
+                <td>{{ transaction.contact.name }}</td>
+                <td>{{ transaction.transaction_date|date:"d/m/Y H:i" }}</td>
+                <td>R$ {{ transaction.total_value|floatformat:2 }}</td>
+                <td class="action-buttons">
+                    <a href="#" class="btn-icon btn-icon-details" title="Detalhes"><i class="fa-solid fa-eye"></i></a>
+                    <a href="#" class="btn-icon btn-icon-edit" title="Editar"><i class="fa-solid fa-pencil"></i></a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Nenhuma transação encontrada.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

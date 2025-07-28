@@ -18,6 +18,8 @@ urlpatterns = [
     # path('sales/', include('sales.urls')),
     # URL principal (deve vir por último para não capturar as outras)
     path("", include("core_app.urls")),  # Nossas URLs principais (home, dashboard)
+    # Deixamos um path vazio para capturar /compras e /vendas
+    path('', include('transactions.urls')), 
 ]
 
 if settings.DEBUG:

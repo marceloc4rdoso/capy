@@ -23,12 +23,15 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "contacts.apps.ContactsConfig",
     "core_app.apps.CoreAppConfig",  # Criaremos este app para a lógica principal
+    'inventory.apps.InventoryConfig',
+    'transactions.apps.TransactionsConfig',
+
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
+    "django.contrib.staticfiles",        
 ]
 
 MIDDLEWARE = [
