@@ -465,3 +465,6 @@ tbody tr:hover {
     flex-direction: row; /* Alinha os botões lado a lado */
     gap: 8px;            /* Espaçamento entre os botões */
 }
+
+.totals-section { display: flex; justify-content: flex-end; gap: 20px; align-items: center; }
+.totals-section .form-group { flex-basis: 200px; }
