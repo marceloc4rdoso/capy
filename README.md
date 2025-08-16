@@ -111,7 +111,7 @@ Siga os passos abaixo para rodar o projeto em seu ambiente de desenvolvimento.
 
 O Capy Gestão é um projeto em constante evolução. Os próximos passos planejados incluem:
 
-*   [ ] Implementação dos módulos de **Compras** e **Vendas**.
+*   [ ] Melhorias módulos de **Compras** e **Vendas**.
 *   [ ] Criação de um dashboard com **KPIs e gráficos** interativos.
 *   [ ] Validação de documentos (CPF/CNPJ) no backend.
 *   [ ] Testes automatizados para garantir a estabilidade do código.
