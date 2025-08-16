@@ -1,6 +1,4 @@
 # 🚀 Capy Gestão: Sistema de Gestão Empresarial
-## Curso Programação Python com Framework (Djnago) Senai
-### Turma: PYFRAME 2506SG
 
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python)
 ![Django](https://img.shields.io/badge/Django-5.2-092E20?style=for-the-badge&logo=django)
