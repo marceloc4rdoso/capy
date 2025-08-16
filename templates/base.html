@@ -1,4 +1,3 @@
-<!-- templates/base.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -7,31 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Capy Gestão{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-	<!-- Tailwind -->
-	<link rel="stylesheet" href="{% static 'css/soft-ui-dashboard-tailwind.css' %}" />
-	<link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
-	<!-- Fonts and Icons -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-	<!-- Atual -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-	<!-- FontAwesome Icons -->
-	<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-	<!-- Nucleo Icons -->
-	<link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
-	<link href="{% static 'css/nucleo-svg.css' %}" rel="stylesheet" />
 </head>
-<body>
+<body class="bg-neutral text-gray-800 min-h-screen flex flex-col">
     <header>
         <nav class="navbar">
-            <div class="nav-logo">
-            <!-- LÓGICA DO LOGO DO GESTOR -->
+            <div class="text-2xl font-bold tracking-wide text-center">
             <a href="{% url 'home' %}">
                 {% if system_holder_logo %}
                     <img src="{{ system_holder_logo.url }}" alt="Logo de {{ system_holder_name }}" class="client-logo-img">
                     <span class="system-name-small">{{ system_holder_name }}</span>
                 {% else %}
-                    <strong>{{ system_holder_name|default:"CAPY GESTÃO" }}</strong>
+                    <strong class="text-blue-400">{{ system_holder_name|default:"CAPY GESTÃO" }}</strong>
                 {% endif %}
             </a>
             </div>
@@ -40,10 +26,10 @@
                     <span>Olá, {{ user.username }}!</span>
                     <form class="logout-form" action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="inline-block px-6 py-3 mb-4 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-purple-700 to-pink-500 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">Sair</button>
+                        <button type="submit" class="btn btn-secondary">Sair</button>
                     </form>
                 {% else %}
-					<a href="{% url 'login' %}" class="inline-block px-6 py-3 mb-4 font-bold text-center text-white uppercase align-middle transition-all rounded-lg cursor-pointer bg-gradient-to-tl from-purple-700 to-pink-500 leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 hover:scale-102 active:opacity-85 hover:shadow-soft-xs">Entra</a>                    
+					<a href="{% url 'login' %}" class="btn btn-primary">Entrar</a>
                 {% endif %}
             </div>
         </nav>
@@ -55,7 +41,10 @@
     </main>
 
     <footer>
-        <p>© 2026 Capy Gestão. Todos os direitos reservados.</p>
+        <div class="mt-auto text-sm text-gray-400">
+            <p>© 2026 Capy Gestão. Todos os direitos reservados.</p>
+            <p>Desenvolvido por <a href="https://www.capybird.com.br" class="text-blue-400">Capybird</a></p>
+        </div>
     </footer>
 </body>
 </html>

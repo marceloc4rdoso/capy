@@ -1,35 +1,37 @@
+/* static/css/style.css (Refatorado) */
+
 /* ==========================================================================
-   CAPY GESTÃO - Folha de Estilos Principal
+   CAPY GESTÃO - Folha de Estilos Principal (Refatorada)
    ========================================================================== */
-   
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+
 
 /* --- 1. DEFINIÇÃO DA PALETA DE CORES E VARIÁVEIS GLOBAIS --- */
 :root {
     /* Paleta de Cores da Marca */
     --color-primary: #00a3d9;
-    --color-primary-dark: #0082ad; /* Para efeito hover */
+    --color-primary-dark: #0082ad;
     --color-secondary: #FF6905;
     --color-tertiary: #2CE864;
     --color-quaternary: #032D3F;
 
     /* Cores Semânticas e de UI */
-    --color-danger: #dc3545;      /* Para ações destrutivas (Excluir) */
-    --color-success: var(--color-tertiary); /* Para ações de sucesso (Salvar) */
-    --color-edit: var(--color-secondary);   /* Para ações de edição */
+    --color-danger: #dc3545;
+    --color-danger-dark: #b02a37;
+    --color-success: var(--color-tertiary);
+    --color-success-dark: #27d15b;
+    --color-edit: var(--color-secondary);
+    --color-edit-dark: #cc5704;
     
     /* Tons de Cinza para UI */
-    --color-gray-dark: #5a6268;   /* Para botões inativos e de cancelamento */
+    --color-gray-dark: #5a6268;
     --color-gray-medium: #adb5bd;
-    --color-gray-light: #f1faff;  /* Para fundos sutis (hover de tabela, etc) */
+    --color-gray-light: #f1faff;
     --color-background-main: #f8f9fa;
     --color-background-card: #ffffff;
 
     /* Cores de Texto para Contraste */
-    --text-on-light-bg: var(--color-quaternary); /* Texto principal sobre fundos claros */
-    --text-on-dark-bg: #f0f0f0;  /* Texto claro sobre fundos escuros */
+    --text-on-light-bg: var(--color-quaternary);
+    --text-on-dark-bg: #f0f0f0;
 }
 
 
@@ -57,6 +59,21 @@ body {
 
 
 /* --- 3. COMPONENTES DE LAYOUT --- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-background-card);
+    padding: 1rem 2.5%;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
 .dashboard-layout {
     display: flex;
     gap: 20px;
@@ -78,13 +95,38 @@ body {
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.navbar {
+.sidebar h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar ul li a {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: var(--color-background-card);
-    padding: 1rem 2.5%; /* Reduzido para alinhar com o container */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    gap: 12px;
+    padding: 10px;
+    color: var(--text-on-light-bg);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.sidebar ul li a:hover {
+    background-color: var(--color-gray-light);
+    color: var(--color-primary-dark);
+}
+
+.sidebar ul li a i {
+    width: 20px;
+    text-align: center;
 }
 
 footer {
@@ -98,94 +140,67 @@ footer {
 
 /* --- 4. COMPONENTES DE UI (Botões, Formulários, Tabelas) --- */
 
-/* Tipografia e Links */
-
-/* --- Estilos para Logos Dinâmicos --- */
-
-/* Logo na Navbar */
-
-.nav-logo a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-decoration: none;
-}
+/* Logos Dinâmicos */
 .client-logo-img {
-    max-height: 40px; /* Ajuste a altura máxima do logo */
-    max-width: 150px; /* E a largura máxima */
+    max-height: 40px;
+    max-width: 150px;
     margin-bottom: 4px;
 }
+
 .system-name-small {
     font-size: 0.7em;
     color: var(--color-gray-medium);
     font-weight: normal;
 }
 
-/* Logo na Página de Detalhes */
 .detail-title-with-logo {
     display: flex;
     align-items: center;
     gap: 15px;
 }
+
 .detail-logo-img {
     max-height: 60px;
     border-radius: 5px;
     background-color: var(--color-gray-light);
     padding: 5px;
 }
-.sidebar h3 {
-    margin-top: 0;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-}
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-.sidebar ul li a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px;
-    color: var(--text-on-light-bg);
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: 500;
-}
-.sidebar ul li a:hover {
-    background-color: var(--color-gray-light);
-    color: var(--color-primary-dark);
-}
-.sidebar ul li a i {
-    width: 20px;
-    text-align: center;
-}
 
-/* Botões */
+/* Sistema de Botões Unificado */
 .btn {
     display: inline-block;
-    padding: 10px 15px;
+    padding: 10px 18px;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
     text-decoration: none;
     text-align: center;
     font-weight: bold;
-    transition: background-color 0.2s, color 0.2s;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+.btn:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
 .btn-primary { background-color: var(--color-primary); color: white; }
 .btn-primary:hover { background-color: var(--color-primary-dark); }
 
 .btn-save { background-color: var(--color-success); color: var(--color-quaternary); }
-.btn-save:hover { background-color: #27d15b; }
+.btn-save:hover { background-color: var(--color-success-dark); }
 
-.btn-secondary, .btn-cancel {
+.btn-danger { background-color: var(--color-danger); color: white; }
+.btn-danger:hover { background-color: var(--color-danger-dark); }
+
+.btn-edit { background-color: var(--color-edit); color: white; }
+.btn-edit:hover { background-color: var(--color-edit-dark); }
+
+.btn-cancel, .btn-secondary {
     background-color: var(--color-gray-dark);
     color: var(--text-on-dark-bg);
 }
-.btn-secondary:hover, .btn-cancel:hover {
+.btn-cancel:hover, .btn-secondary:hover {
     background-color: #495057;
 }
 
@@ -198,131 +213,85 @@ footer {
     gap: 10px;
     margin-bottom: 20px;
 }
-.management-header h1 {
-    margin: 0;
-}
-.management-header .management-actions a {
-    margin-left: 5px;
-}
+.management-header h1 { margin: 0; }
+.management-actions { display: flex; gap: 10px; }
 
-/* Tabelas */
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-th, td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-    vertical-align: middle;
-}
-th {
-    background-color: #f7f9fa;
-    font-weight: bold;
-}
-tbody tr:hover {
-    background-color: var(--color-gray-light);
-}
-
-/* Tabela Estilizada */
-
+/* Tabelas Estilizadas */
 .table-container {
   overflow-x: auto;
   padding: 1rem;
   border-radius: 10px;
-  background-color: #f8f9fa;
+  background-color: var(--color-background-card);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
 }
+
 .styled-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  overflow: hidden;
 }
 
 .styled-table thead {
-  background-color: #e9ecef; /* fundo claro */
-  color: #212529; /* texto escuro */
+  background-color: #f1faff;
+  color: var(--text-on-light-bg);
 }
 
 .styled-table th,
 .styled-table td {
-  padding: 0.4rem 0.75rem; /* altura reduzida */
+  padding: 12px 15px;
   text-align: left;
   vertical-align: middle;
-}
-
-.styled-table tbody tr {
   border-bottom: 1px solid #dee2e6;
 }
 
-.styled-table tbody tr:nth-child(even) {
-  background-color: #f1f3f5;
-}
-
 .styled-table tbody tr:hover {
-  background-color: #e9ecef;
+  background-color: var(--color-gray-light);
   transition: background-color 0.2s ease-in-out;
 }
-/* Estilo para links NÃO VISITADOS dentro da tabela */
-.styled-table tbody a:link {
-    color: var(--text-on-light-bg); /* Cor principal do texto (seu azul quaternário) */
+
+.styled-table tbody a {
+    color: var(--text-on-light-bg);
     text-decoration: none;
     font-weight: 500;
     transition: color 0.2s;
 }
-/* Estilo para links JÁ VISITADOS dentro da tabela */
-.styled-table tbody a:visited {
-    color: var(--color-gray-dark);  /* Usa o cinza escuro para indicar que foi visitado */
-    text-decoration: none;
-    font-weight: 500;
-}
-/* Efeito ao passar o mouse (se aplica a ambos os estados, visitado ou não) */
+
 .styled-table tbody a:hover {
-    color: var(--color-primary); /* Muda para a cor primária da marca no hover */
-    text-decoration: underline;  /* Adiciona sublinhado no hover para clareza */
+    color: var(--color-primary);
+    text-decoration: underline;
 }
 
-
-/* Botões de Ação na Tabela */
-/* Ações empilhadas (botões) */
-.styled-table td .action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+/* Botões de Ação na Tabela (Ícones) */
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
 }
 
-.styled-table td .action-buttons button {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 0.7rem;
-  font-size: 0.85rem;
-  border: none;
-  border-radius: 6px;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 50%;
+    text-decoration: none;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Botão de Editar */
-.styled-table td .action-buttons button.edit {
-  background-color: var(--color-edit);
-}
-.styled-table td .action-buttons button.edit:hover {
-  background-color: #cc5704;
+.btn-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-/* Botão de Excluir */
-.styled-table td .action-buttons button.delete {
-  background-color: var(--color-danger);
-}
-.styled-table td .action-buttons button.delete:hover {
-  background-color: #b02a37;
-}
-
+.btn-icon i { font-size: 14px; }
+.btn-icon-edit { background-color: var(--color-edit); }
+.btn-icon-delete { background-color: var(--color-danger); }
+.btn-icon-details { background-color: var(--color-primary); }
 
 
 /* Formulários */
@@ -334,11 +303,13 @@ tbody tr:hover {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
 .form-container h2, .login-form h2 {
     text-align: center;
     margin-top: 0;
     margin-bottom: 25px;
 }
+
 .form-actions {
     margin-top: 30px;
     display: flex;
@@ -358,113 +329,58 @@ tbody tr:hover {
     align-items: center;
     margin-bottom: 20px;
 }
+
 .detail-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
 }
+
 .detail-card {
     background: var(--color-background-card);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
+
 .detail-card h3 {
     margin-top: 0;
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
 }
+
 .full-width {
     grid-column: 1 / -1;
 }
 
-/* Formset de Endereços */
+/* Formset de Endereços Melhorado */
 .formset-container {
     border: 1px solid #ddd;
     padding: 20px;
     border-radius: 8px;
     margin-top: 20px;
 }
+
 .formset-container legend {
     padding: 0 10px;
     width: auto;
     font-size: 1.2em;
     font-weight: bold;
 }
+
 .address-form {
     border-bottom: 1px solid #eee;
     padding-bottom: 15px;
     margin-bottom: 15px;
 }
+
 .address-form:last-child {
     border-bottom: none;
     margin-bottom: 0;
 }
 
-/* ==========================================================================
-   MELHORIAS DE UI - Links de Tabela e Botões de Ação Globais
-   ========================================================================== */
-
-/* --- 1. AJUSTE NOS LINKS DA TABELA --- */
-/* Remove o sublinhado e a cor azul/roxa padrão dos links na tabela */
-.table-wrapper tbody a:link,
-.table-wrapper tbody a:visited {
-    color: var(--text-on-light-bg); /* Usa a cor de texto principal definida nas variáveis */
-    text-decoration: none;         /* Remove o sublinhado */
-    font-weight: 500;              /* Deixa a fonte um pouco mais encorpada */
-    transition: color 0.2s;
+.address-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
 }
-
-/* Adiciona um feedback visual sutil ao passar o mouse */
-.table-wrapper tbody a:hover {
-    color: var(--color-primary);   /* Muda a cor para a primária da marca no hover */
-    text-decoration: none;
-}
-
-
-/* --- 2. NOVOS BOTÕES DE AÇÃO COM ÍCONES (GLOBAL) --- */
-
-/* Classe base para todos os botões de ícone */
-.btn-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;  /* Largura fixa */
-    height: 32px; /* Altura fixa */
-    padding: 0;
-    border-radius: 50%; /* Deixa os botões redondos */
-    text-decoration: none;
-    color: white; /* Cor do ícone */
-    border: none;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn-icon:hover {
-    transform: scale(1.1); /* Efeito de zoom sutil no hover */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-}
-
-.btn-icon i {
-    font-size: 14px; /* Tamanho do ícone */
-}
-
-/* Modificadores de cor para cada tipo de ação */
-.btn-icon-edit {
-    background-color: var(--color-edit); /* Laranja da sua paleta */
-}
-.btn-icon-delete {
-    background-color: var(--color-danger); /* Vermelho (mantido por UX) */
-}
-.btn-icon-details {
-    background-color: var(--color-primary); /* Azul para detalhes/visualizar */
-}
-
-/* Ajusta o container dos botões na tabela para alinhamento horizontal */
-.action-buttons {
-    flex-direction: row; /* Alinha os botões lado a lado */
-    gap: 8px;            /* Espaçamento entre os botões */
-}
-
-.totals-section { display: flex; justify-content: flex-end; gap: 20px; align-items: center; }
-.totals-section .form-group { flex-basis: 200px; }

@@ -1,11 +1,7 @@
-<!-- templates/app_base.html -->
 {% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <div class="dashboard-layout">
     <aside class="sidebar">
         <h3>Menu</h3>
@@ -21,7 +17,7 @@
                     <i class="fa-solid fa-address-book"></i>
                     <span>Contatos</span>
                 </a>
-            </li>            
+            </li>
             <li>
                 <a href="{% url 'contact_selection' transaction_type='compras' %}">
                     <i class="fa-solid fa-shopping-cart"></i>

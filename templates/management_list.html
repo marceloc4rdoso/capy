@@ -1,10 +1,8 @@
-<!-- templates/management_list.html -->
-{% extends 'base.html' %}
+{% extends 'app_base.html' %}
+{% load static %}
 {% block title %}{{ title }} | Sistema de Gestão{% endblock %}
 
-{% block content %}
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% block app_content %}
 
 <div class="management-header">
     <h1>{{ title }}</h1>
@@ -14,7 +12,6 @@
     </div>
 </div>
 
-<!-- Tabela de Usuários -->
 <div class="table-container">
     <h2>Usuários do Sistema</h2>
     <table class="styled-table">
@@ -36,12 +33,11 @@
                 <td>{% if user.is_active %}Ativo{% else %}Inativo{% endif %}</td>
                 <td>
                     <div class="action-buttons">
+                        <a href="{% url 'user_update' user.pk %}" class="btn-icon btn-icon-edit" title="Editar">
+                            <i class="fas fa-pen"></i>
                         </a>
-                        <a href="{% url 'user_update' user.pk %}" class="btn btn-edit">
-                            <i class="fas fa-pen"></i> Editar
-                        </a>
-                        <a href="{% url 'user_delete' user.pk %}" class="btn btn-delete">
-                            <i class="fas fa-trash"></i> Excluir
+                        <a href="{% url 'user_delete' user.pk %}" class="btn-icon btn-icon-delete" title="Excluir">
+                            <i class="fas fa-trash"></i>
                         </a>
                     </div>
                 </td>
@@ -55,7 +51,6 @@
     </table>
 </div>
 
-<!-- Tabela de Contatos -->
 <div class="table-container">
     <h2>Contatos</h2>
     <table class="styled-table">
@@ -71,7 +66,7 @@
         <tbody>
             {% for contact in contacts %}
             <tr>
-                <td>{{ contact.name }}</td>
+                <td><a href="{% url 'contact_detail' contact.pk %}">{{ contact.name }}</a></td>
                 <td>{{ contact.email }}</td>
                 <td>{{ contact.phone|default:"-" }}</td>
                 <td>
@@ -83,11 +78,11 @@
                 </td>
                 <td>
                     <div class="action-buttons">
-                        <a href="{% url 'contact_update' contact.pk %}" class="btn btn-edit">
-                            <i class="fas fa-pen"></i> Editar
+                        <a href="{% url 'contact_update' contact.pk %}" class="btn-icon btn-icon-edit" title="Editar">
+                            <i class="fas fa-pen"></i>
                         </a>
-                        <a href="{% url 'contact_delete' contact.pk %}" class="btn btn-delete">
-                            <i class="fas fa-trash"></i> Excluir
+                        <a href="{% url 'contact_delete' contact.pk %}" class="btn-icon btn-icon-delete" title="Excluir">
+                            <i class="fas fa-trash"></i>
                         </a>
                     </div>
                 </td>

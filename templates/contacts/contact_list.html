@@ -1,18 +1,23 @@
 <!-- templates/contacts/contact_list.html -->
 {% extends 'app_base.html' %}
+{% load static %}
+{% load i18n %}
 
 {% block title %}{{ title }}{% endblock %}
 
 {% block app_content %}
-<div class="management-header">
-    <h1>{{ title }}</h1>
-    <div class="management-actions">
-        <a href="{% url 'contact_list' %}" class="btn {% if current_status == 'active' %}btn-primary{% else %}btn btn-primary{% endif %}">Ativos</a>
-        <a href="{% url 'contact_list' %}?status=inactive" class="btn {% if current_status == 'inactive' %}btn-primary{% else %}btn btn-secondary{% endif %}">Inativos</a>
-        <a href="{% url 'contact_create' %}" class="btn btn-primary">Novo Contato</a>
-    </div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-6">
+    <div class="bg-white rounded-xl shadow-lg p-4 flex items-center gap-4 hover:shadow-xl transition-all cursor-pointer">
+        <div class="management-header">
+            <h1>{{ title }}</h1>
+            <div class="management-actions">
+                <a href="{% url 'contact_list' %}" class="btn {% if current_status == 'active' %}btn-primary{% else %}btn btn-primary{% endif %}">Ativos</a>
+                <a href="{% url 'contact_list' %}?status=inactive" class="btn {% if current_status == 'inactive' %}btn-primary{% else %}btn btn-secondary{% endif %}">Inativos</a>
+                <a href="{% url 'contact_create' %}" class="btn btn-primary">Novo Contato</a>
+            </div>
+        </div>
+    </div>    
 </div>
-
 <div class="table-container">
     <table class="styled-table">
         <thead>

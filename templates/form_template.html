@@ -1,10 +1,8 @@
-<!-- templates/form_template.html -->
-{% extends 'app_base.html' %} {# <<< MUDANÇA IMPORTANTE #}
+{% extends 'app_base.html' %}
+{% load static %}
 {% block title %}{{ title }} | Capy Gestão{% endblock %}
 
-{% block app_content %} {# <<< Preenchendo o bloco do app_base #}
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+{% block app_content %}
 
 <div class="form-container">
     <h2>{{ title }}</h2>
@@ -12,8 +10,8 @@
         {% csrf_token %}
         {{ form.as_p }}
         <div class="form-actions">
-            <button type="submit" class="btn">Salvar</button>
-            <a href="{{ success_url }}" class="btn btn-cancel">Cancelar</a>
+            <a href="{{ request.META.HTTP_REFERER|default:cancel_url }}" class="btn btn-cancel">Cancelar</a>
+            <button type="submit" class="btn btn-save">Salvar</button>
         </div>
     </form>
 </div>
