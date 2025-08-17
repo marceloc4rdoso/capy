@@ -82,6 +82,9 @@ class TransactionItem(models.Model):
 
 # --- Sinal para atualizar o estoque ---
 # Usamos um "sinal" do Django para executar uma ação APÓS um item ser salvo.
+# transactions/models.py
+
+
 @receiver(post_save, sender=TransactionItem)
 def update_stock_on_save(sender, instance, created, **kwargs):
     """
@@ -91,9 +94,7 @@ def update_stock_on_save(sender, instance, created, **kwargs):
     item = instance.item
     transaction = instance.transaction
 
-    if item.item_type == "PROD":  # Só atualiza estoque para produtos
-        # Lógica para recalcular estoque (um pouco complexa para evitar erros)
-        # Uma abordagem simples: recalcular tudo a partir do zero
+    if item.item_type == "PROD":
         total_purchased = sum(
             ti.quantity
             for ti in TransactionItem.objects.filter(
@@ -110,5 +111,6 @@ def update_stock_on_save(sender, instance, created, **kwargs):
         item.save(update_fields=["stock_quantity"])
 
     # Atualiza o valor total da transação pai
-    if created:  # Faz isso apenas na criação para evitar loops
-        transaction.update_total_value()
+    # A verificação 'if created:' foi removida para garantir que o total seja
+    # sempre atualizado, mesmo ao editar/remover itens.
+    transaction.update_totals()  # <--- NOME DO MÉTODO CORRIGIDO

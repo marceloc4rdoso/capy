@@ -11,6 +11,7 @@ from django.views.generic import (
 from .models import Contact
 from .forms import ContactForm, AddressFormSet
 
+
 # O 'management_list' é o nome da URL que criaremos para a lista unificada.
 SUCCESS_URL = reverse_lazy("contact_list")
 
@@ -20,7 +21,7 @@ class ContactListView(LoginRequiredMixin, ListView):
     # É uma boa prática colocar templates específicos do app em um subdiretório
     template_name = "contacts/contact_list.html"
     context_object_name = "contacts"  # Define o nome da variável no template
-    paginate_by = 15  # Opcional: Adiciona paginação para listas grandes
+    paginate_by = 5  # Opcional: Adiciona paginação para listas grandes
 
     def get_queryset(self):
         # Pega o parâmetro 'status' da URL, ex: /contacts/?status=inactive
@@ -49,6 +50,7 @@ class ContactCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["title"] = "Novo Contato"
+        context["cancel_url"] = reverse_lazy("contact_list")
         context["success_url"] = self.success_url
         return context
 
@@ -70,6 +72,7 @@ class ContactUpdateView(LoginRequiredMixin, UpdateView):
             )
         else:
             context["address_formset"] = AddressFormSet(instance=self.object)
+        context["cancel_url"] = reverse_lazy("contact_list")
         return context
 
     def form_valid(self, form):

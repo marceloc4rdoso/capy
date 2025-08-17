@@ -1,15 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{# =====================================================================
-   Este template é a base para TODAS as páginas internas da aplicação.
-   Ele define o layout principal com a barra lateral e a área de conteúdo.
-   ===================================================================== #}
-
 {% block content %}
 <div class="dashboard-layout">
-
-    {# --- SIDEBAR (MENU LATERAL) --- #}
     <aside class="sidebar">
         <h3>Menu</h3>
         <ul>
@@ -42,9 +35,9 @@
                     <i class="fa-solid fa-tags"></i>
                     <span>Vendas</span>
                 </a>
-            </li>            
+            </li>
             <li>
-                <a href="#">
+                <a href="{% url 'management_list' %}">
                     <i class="fa-solid fa-users-gear"></i>
                     <span>Configurações Gerais</span>
                 </a>
@@ -52,17 +45,10 @@
         </ul>
     </aside>
 
-    {# --- ÁREA DE CONTEÚDO PRINCIPAL --- #}
-    {# Esta section é o container flexível que crescerá para ocupar o espaço #}
     <section class="main-content">
-        
-        {# Este bloco é o "espaço em branco" que será preenchido #}
-        {# pelos templates filhos (dashboard.html, contact_list.html, etc.) #}
+        {# Este bloco será o conteúdo específico de cada página #}
         {% block app_content %}
-            <!-- O conteúdo de cada página será inserido aqui -->
         {% endblock app_content %}
-        
     </section>
-
 </div>
 {% endblock content %}

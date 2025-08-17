@@ -1,0 +1,16 @@
+{% extends 'app_base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block app_content %}
+<form method="post" class="form-container">
+    {% csrf_token %}
+    <h2>{{ title }}</h2>
+
+    {{ form.as_p }}
+
+    <div class="form-actions">
+        <button type="submit" class="btn btn-save">Salvar</button>
+        <a href="{% url 'item_list' %}" class="btn-cancel">Cancelar</a>
+    </div>
+</form>
+{% endblock %}

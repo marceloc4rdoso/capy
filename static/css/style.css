@@ -66,6 +66,8 @@ body {
     background-color: var(--color-background-card);
     padding: 1rem 2.5%;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative; 
+    z-index: 10;
 }
 
 .nav-menu {
@@ -74,13 +76,126 @@ body {
     gap: 1rem;
 }
 
+/* ==========================================================================
+   COMPONENTES DO DASHBOARD
+   ========================================================================== */
+
+/* --- Grid principal do Dashboard --- */
 .dashboard-layout {
     display: flex;
+    /* Alinha os itens no início do eixo transversal (topo) */
+    align-items: flex-start; 
     gap: 20px;
+}
+
+.dashboard-grid {
+    display: grid;
+    /* Cria 4 colunas de largura igual, com espaçamento */
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 20px;
+}
+
+/* --- Card genérico para o Dashboard --- */
+.dashboard-card {
+    background-color: var(--color-background-card);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    /* Por padrão, cada card ocupa 1 coluna. Para ocupar mais, use grid-column */
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+}
+
+.card-body {
+    padding: 0;
+}
+
+/* --- Estilo para a Lista de Transações no Card --- */
+.transaction-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.transaction-list li {
+    margin-bottom: 10px;
+}
+
+.transaction-list li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: var(--text-on-light-bg);
+    transition: background-color 0.2s;
+}
+
+.transaction-list li a:hover {
+    background-color: var(--color-gray-light);
+}
+
+.contact-name {
+    font-size: 0.9em;
+}
+
+.transaction-value {
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.sale-color {
+    color: var(--color-tertiary); /* Verde para Vendas (receita) */
+}
+
+.purchase-color {
+    color: var(--color-danger); /* Vermelho para Compras (despesa) */
+}
+
+
+/* --- Estilo para o seletor de Rádio --- */
+.radio-toggle {
+    display: flex;
+    border: 1px solid var(--color-primary);
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.radio-toggle input[type="radio"] {
+    display: none; /* Esconde o botão de rádio padrão */
+}
+
+.radio-toggle label {
+    padding: 5px 12px;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    color: var(--color-primary);
+}
+
+/* Estilo para o botão de rádio selecionado */
+.radio-toggle input[type="radio"]:checked + label {
+    background-color: var(--color-primary);
+    color: white;
 }
 
 .main-content {
     flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0; 
 }
 
 .sidebar {
@@ -384,3 +499,19 @@ footer {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 15px;
 }
+
+/* --- Componentes Específicos - Badges --- */
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: white;
+}
+.badge.prod {
+    background-color: var(--color-primary); /* Azul para Produto */
+}
+.badge.serv {
+    background-color: var(--color-edit); /* Laranja para Serviço */
+}
+

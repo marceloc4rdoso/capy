@@ -1,0 +1,53 @@
+{% extends 'app_base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block app_content %}
+<div class="management-header">
+    <h1>{{ title }}</h1>
+    <a href="{% url 'item_create' %}" class="btn btn-primary">Novo Item</a>
+</div>
+
+<div class="table-wrapper">
+    <table>
+        <thead>
+            <tr>
+                <th>Nome do Item</th>
+                <th>Tipo</th>
+                <th>Estoque Atual</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>
+                    <span class="badge {{ item.item_type|lower }}">{{ item.get_item_type_display }}</span>
+                </td>
+                <td>
+                    {% if item.item_type == 'PROD' %}
+                        {{ item.stock_quantity|floatformat:2 }}
+                    {% else %}
+                        <span class="text-muted">N/A</span>
+                    {% endif %}
+                </td>
+                <td>{% if item.is_active %}Ativo{% else %}Inativo{% endif %}</td>
+                <td class="action-buttons">
+                    <a href="{% url 'item_update' item.pk %}" class="btn-icon btn-icon-edit" title="Editar Item">
+                        <i class="fa-solid fa-pencil"></i>
+                    </a>
+                    <a href="{% url 'item_delete' item.pk %}" class="btn-icon btn-icon-delete" title="Excluir Item">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">Nenhum item cadastrado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

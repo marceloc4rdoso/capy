@@ -1,15 +1,84 @@
-<!-- templates/dashboard.html -->
 {% extends 'app_base.html' %}
-{% block title %}Dashboard | Capy Gestão{% endblock %}
+{% block title %}Dashboard | Sistema de Gestão{% endblock %}
 
-{% block app_content %} {# <<< Preenchendo o bloco do app_base #}
+{% block app_content %}
+    <h2>Dashboard Principal</h2>
+    <p class="mb-4">Aqui serão exibidos os principais KPIs e gráficos do sistema de gestão.</p>
 
-<div class="dashboard-layout">    
-    <!-- Conteúdo do dashboard virá aqui -->
-    <section class="main-content">
-        <h2>Dashboard Principal</h2>
-        <p>Aqui serão exibidos os principais KPIs e gráficos do sistema de gestão.</p>
-        <!-- Conteúdo do dashboard virá aqui -->
-    </section>
-</div>
+    <!-- INÍCIO DO GRID DO DASHBOARD -->
+    <div class="dashboard-grid">
+
+        <!-- CARD DE ÚLTIMAS TRANSAÇÕES -->
+        <div class="dashboard-card">
+            <div class="card-header">
+                <h3>Últimas Transações</h3>
+                <div class="radio-toggle">
+                    <input type="radio" id="toggle-sales" name="transaction-toggle" value="sales" checked>
+                    <label for="toggle-sales">Vendas</label>
+                    <input type="radio" id="toggle-purchases" name="transaction-toggle" value="purchases">
+                    <label for="toggle-purchases">Compras</label>
+                </div>
+            </div>
+            <div class="card-body">
+                <!-- Lista de Vendas (Visível por padrão) -->
+                <ul class="transaction-list" id="sales-list">
+                    {% for sale in latest_sales %}
+                        <li>
+                            <a href="#"> <!-- Link para o detalhe da venda -->
+                                <span class="contact-name">{{ sale.contact.name|truncatechars:25 }}</span>
+                                <span class="transaction-value sale-color">R$ {{ sale.total_value|floatformat:2 }}</span>
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li>Nenhuma venda recente.</li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Lista de Compras (Escondida por padrão) -->
+                <ul class="transaction-list" id="purchases-list" style="display: none;">
+                    {% for purchase in latest_purchases %}
+                        <li>
+                            <a href="#"> <!-- Link para o detalhe da compra -->
+                                <span class="contact-name">{{ purchase.contact.name|truncatechars:25 }}</span>
+                                <span class="transaction-value purchase-color">R$ {{ purchase.total_value|floatformat:2 }}</span>
+                            </a>
+                        </li>
+                    {% empty %}
+                        <li>Nenhuma compra recente.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <!-- FIM DO CARD DE TRANSAÇÕES -->
+
+        <!-- Futuros cards podem ser adicionados aqui -->
+        <!-- <div class="dashboard-card"> ... </div> -->
+        <!-- <div class="dashboard-card"> ... </div> -->
+        <!-- <div class="dashboard-card"> ... </div> -->
+
+    </div>
+    <!-- FIM DO GRID DO DASHBOARD -->
+
+    <script>
+        // Adicionamos o script no final do bloco para garantir que o HTML seja carregado primeiro
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleSales = document.getElementById('toggle-sales');
+            const togglePurchases = document.getElementById('toggle-purchases');
+            const salesList = document.getElementById('sales-list');
+            const purchasesList = document.getElementById('purchases-list');
+
+            function handleToggleChange() {
+                if (toggleSales.checked) {
+                    salesList.style.display = 'block';
+                    purchasesList.style.display = 'none';
+                } else if (togglePurchases.checked) {
+                    salesList.style.display = 'none';
+                    purchasesList.style.display = 'block';
+                }
+            }
+
+            toggleSales.addEventListener('change', handleToggleChange);
+            togglePurchases.addEventListener('change', handleToggleChange);
+        });
+    </script>
 {% endblock app_content %}

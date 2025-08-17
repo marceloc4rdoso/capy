@@ -19,6 +19,7 @@ urlpatterns = [
     # URL principal (deve vir por último para não capturar as outras)
     path("", include("core_app.urls")),  # Nossas URLs principais (home, dashboard)
     # Deixamos um path vazio para capturar /compras e /vendas
+    path("inventario/", include("inventory.urls")),
     path("", include("transactions.urls")),
 ]
 

@@ -3,8 +3,7 @@
 {% block app_content %}
 <div class="management-header">
     <h1>{{ title }}</h1>
-    <a href="{% url 'transaction_create' transaction_type=transaction_type %}" class="btn btn-primary">Nova {{ transaction_type|slice:":-1"|capfirst }}</a>
-</div>
+    <a href="{% url 'contact_selection' transaction_type=transaction_type %}" class="btn btn-primary">Nova {{ transaction_type|slice:":-1"|capfirst }}</a></div>
 <div class="table-container">
     <table class="styled-table">
         <thead>

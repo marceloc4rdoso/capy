@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.contrib.auth.models import User
 from contacts.models import Contact
+from transactions.models import Transaction
 
 
 # View para a página inicial (pública)
@@ -16,6 +17,21 @@ class HomeView(TemplateView):
 # LoginRequiredMixin cuida da segurança, redirecionando para a página de login se o usuário não estiver logado.
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        # Busca as 5 últimas vendas
+        context["latest_sales"] = Transaction.objects.filter(
+            transaction_type__iexact="VENDAS"
+        ).order_by("-transaction_date")[:5]
+
+        # Busca as 5 últimas compras
+        context["latest_purchases"] = Transaction.objects.filter(
+            transaction_type__iexact="COMPRAS"
+        ).order_by("-transaction_date")[:5]
+
+        return context
 
 
 class ManagementListView(LoginRequiredMixin, TemplateView):
