@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, DetailView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Transaction, Contact
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render
 from django.db.models import Q
 from .forms import TransactionForm, TransactionItemFormSet
 
@@ -28,21 +28,31 @@ class TransactionListView(LoginRequiredMixin, ListView):
         return context
 
 
-# NOVA VIEW: ContactSelectionView
+# VIEW: ContactSelectionView
 class ContactSelectionView(LoginRequiredMixin, ListView):
     model = Contact
     template_name = "transactions/contact_selection.html"
     context_object_name = "contacts"
+    paginate_by = 10  # Limita a 10 resultados por página
 
     def get_queryset(self):
         queryset = Contact.objects.filter(is_active=True)
-        # Lógica de busca simples
+        # Lógica de busca avançada
         query = self.request.GET.get("q")
         if query:
+            # Remove caracteres especiais do CNPJ/CPF para busca
+            clean_query = ''.join(c for c in query if c.isalnum())
+            
+            # Busca por nome, documento (com ou sem formatação) ou email
             queryset = queryset.filter(
-                Q(name__icontains=query) | Q(document__icontains=query)
-            )
-        return queryset
+                Q(name__icontains=query) | 
+                Q(document__icontains=clean_query) |
+                Q(email__icontains=query)
+            ).distinct()
+            
+            # Limita a 10 resultados para melhor desempenho
+            return queryset[:10]
+        return Contact.objects.none()  # Retorna lista vazia se não houver busca
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -51,6 +61,17 @@ class ContactSelectionView(LoginRequiredMixin, ListView):
         context["title"] = (
             f"Selecionar {'Cliente' if ttype == 'vendas' else 'Fornecedor'}"
         )
+        
+        # Buscar os últimos pedidos (5 por padrão)
+        num_orders = 5
+        transaction_type = ttype.upper()
+        
+        # Buscar os últimos pedidos do tipo especificado (compras ou vendas)
+        latest_transactions = Transaction.objects.filter(
+            transaction_type=transaction_type
+        ).order_by('-transaction_date')[:num_orders]
+        
+        context["latest_transactions"] = latest_transactions
         return context
 
 

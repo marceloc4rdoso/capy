@@ -5,36 +5,143 @@
 <div class="management-header">
     <h1>{{ title }}</h1>
 </div>
-<div class="table-wrapper">
-    <form method="get" class="mb-4">
-        <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Buscar por nome ou documento..." value="{{ request.GET.q }}">
-            <button class="btn btn-primary" type="submit">Buscar</button>
+
+<div class="split-container">
+    <!-- Coluna da esquerda: Pesquisa de contatos -->
+    <div class="search-column">
+        <h2>Buscar {% if transaction_type == 'vendas' %}Cliente{% else %}Fornecedor{% endif %}</h2>
+        <form method="get" class="search-form">
+            <div class="input-group mb-4">
+                <input type="text" name="q" class="form-control form-control-lg" placeholder="Buscar por nome ou CNPJ/CPF..." value="{{ request.GET.q }}" autofocus>
+                <button class="btn btn-primary" type="submit">Buscar</button>
+            </div>
+        </form>
+        
+        {% if request.GET.q %}
+        <div class="search-results">
+            {% if contacts %}
+                <div class="results-list">
+                    {% for contact in contacts %}
+                    <div class="result-item">
+                        <div class="result-info">
+                            <h3>{{ contact.name }}</h3>
+                            <p><strong>Documento:</strong> {{ contact.document|default:"Não informado" }}</p>
+                            <p><strong>E-mail:</strong> {{ contact.email|default:"Não informado" }}</p>
+                        </div>
+                        <div class="result-action">
+                            <a href="{% url 'transaction_create' transaction_type=transaction_type contact_pk=contact.pk %}" class="btn btn-primary">Selecionar</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-results">
+                    <p>Nenhum contato encontrado com "{{ request.GET.q }}".</p>
+                    <p>Tente buscar com outro termo ou <a href="/contacts/create/">cadastre um novo contato</a>.</p>
+                </div>
+            {% endif %}
         </div>
-    </form>
-    <table>
-        <thead>
-            <tr>
-                <th>Nome / Razão Social</th>
-                <th>Documento</th>
-                <th>E-mail</th>
-                <th>Ação</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for contact in contacts %}
-            <tr>
-                <td>{{ contact.name }}</td>
-                <td>{{ contact.document|default:"-" }}</td>
-                <td>{{ contact.email }}</td>
-                <td>
-                    <a href="{% url 'transaction_create' transaction_type=transaction_type contact_pk=contact.pk %}" class="btn btn-primary">Selecionar</a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr><td colspan="4">Nenhum contato encontrado.</td></tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        {% else %}
+        <div class="search-instructions">
+            <p>Digite o nome ou CNPJ/CPF do contato para iniciar a busca.</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Coluna da direita: Últimos pedidos -->
+    <div class="recent-orders-column">
+        <h2>Últimos {% if transaction_type == 'vendas' %}Pedidos{% else %}Pedidos de Compra{% endif %}</h2>
+        
+        {% if latest_transactions %}
+            <div class="recent-orders-list">
+                {% for transaction in latest_transactions %}
+                <div class="order-item">
+                    <div class="order-info">
+                        <h3>{{ transaction.contact.name }}</h3>
+                        <p><strong>Data:</strong> {{ transaction.transaction_date|date:"d/m/Y" }}</p>
+                        <p><strong>Valor:</strong> R$ {{ transaction.total_value|floatformat:2 }}</p>
+                    </div>
+                    <div class="order-action">
+                        <a href="#" class="btn btn-outline-primary btn-sm">Detalhes</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-orders">
+                <p>Nenhum pedido encontrado.</p>
+            </div>
+        {% endif %}
+    </div>
 </div>
+
+<style>
+    .split-container {
+        display: flex;
+        gap: 2rem;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .search-column, .recent-orders-column {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .search-form {
+        margin-bottom: 2rem;
+    }
+    
+    .result-item, .order-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+    
+    .result-info, .order-info {
+        flex: 1;
+        min-width: 0;
+    }
+    
+    .result-info h3, .order-info h3 {
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    
+    .result-info p, .order-info p {
+        margin: 0.25rem 0;
+    }
+    
+    .result-action, .order-action {
+        margin-left: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .no-results, .search-instructions, .no-orders {
+        text-align: center;
+        padding: 2rem;
+        background-color: #f9f9f9;
+        border-radius: 4px;
+    }
+    
+    /* Responsividade para telas menores */
+    @media (max-width: 768px) {
+        .split-container {
+            flex-direction: column;
+        }
+        
+        .search-column, .recent-orders-column {
+            width: 100%;
+        }
+    }
+</style>
 {% endblock %}

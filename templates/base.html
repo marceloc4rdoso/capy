@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-<body class="bg-neutral text-gray-800 min-h-screen flex flex-col">
+<body>
     <header>
         <nav class="navbar">
             <div class="text-2xl font-bold tracking-wide text-center">
@@ -40,11 +40,51 @@
         {% endblock %}
     </main>
 
+    <!-- Botão de Alternância de Tema -->
+    <button class="theme-toggle" id="themeToggle" title="Alternar tema">
+        <i class="theme-toggle-icon fas fa-moon" id="themeIcon"></i>
+        <span id="themeText">Escuro</span>
+    </button>
+
     <footer>
         <div class="mt-auto text-sm text-gray-400">
             <p>© 2026 Capy Gestão. Todos os direitos reservados.</p>
             <p>Desenvolvido por <a href="https://www.capybird.com.br" class="text-blue-400">Capybird</a></p>
         </div>
     </footer>
+
+    <script>
+        // Sistema de Alternância de Tema
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const html = document.documentElement;
+
+        // Verificar tema salvo no localStorage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+
+        // Função para atualizar o botão
+        function updateThemeButton(theme) {
+            if (theme === 'dark') {
+                themeIcon.className = 'theme-toggle-icon fas fa-sun';
+                themeText.textContent = 'Claro';
+            } else {
+                themeIcon.className = 'theme-toggle-icon fas fa-moon';
+                themeText.textContent = 'Escuro';
+            }
+        }
+
+        // Event listener para o botão
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeButton(newTheme);
+        });
+    </script>
 </body>
 </html>

@@ -6,60 +6,124 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block app_content %}
-<div class="detail-header">
+<div class="management-header">
     <div class="detail-title-with-logo">
         {% if contact.logo %}
             <img src="{{ contact.logo.url }}" alt="Logo de {{ contact.name }}" class="detail-logo-img">
         {% endif %}
         <h1>{{ contact.name }}</h1>
     </div>
-    <div class="detail-actions">
-        <a href="{% url 'contact_update' contact.pk %}" class="btn btn-edit">Editar Contato</a>
-        <a href="{% url 'contact_list' %}" class="btn btn-cancel">Voltar para a Lista</a>
+    <div class="management-actions">
+        <a href="{% url 'contact_update' contact.pk %}" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Editar Contato
+        </a>
+        <a href="{% url 'contact_list' %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Voltar para a Lista
+        </a>
     </div>
 </div>
 
 <div class="detail-grid">
     <!-- Card de Informações Principais -->
     <div class="detail-card">
-        <h3>Informações Principais</h3>
-        <p><strong>Classificação:</strong> {{ contact.get_organization_type_display }}</p>
-        <p><strong>Tipo:</strong> {{ contact.get_person_type_display }}</p>
-        <p><strong>CPF/CNPJ:</strong> {{ contact.document|default:"Não informado" }}</p>
-        <p><strong>E-mail:</strong> {{ contact.email }}</p>
-        <p><strong>Telefone:</strong> {{ contact.phone|default:"Não informado" }}</p>
-        <p><strong>Status:</strong> {% if contact.is_active %}Ativo{% else %}Inativo{% endif %}</p>
-        {% if contact.company %}
-        <p><strong>Empresa Associada:</strong> <a href="{% url 'contact_detail' contact.company.pk %}">{{ contact.company.name }}</a></p>
-        {% endif %}
+        <div class="card-header">
+            <h3>Informações Principais</h3>
+            <div class="badge badge-{{ contact.person_type|lower }}">
+                {{ contact.get_person_type_display }}
+            </div>
+        </div>
+        <div class="detail-content">
+            <div class="detail-row">
+                <span class="detail-label">Classificação:</span>
+                <span class="detail-value">{{ contact.get_organization_type_display }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Tipo:</span>
+                <span class="detail-value">{{ contact.get_person_type_display }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">CPF/CNPJ:</span>
+                <span class="detail-value">{{ contact.document|default:"Não informado" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">E-mail:</span>
+                <span class="detail-value">{{ contact.email }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Telefone:</span>
+                <span class="detail-value">{{ contact.phone|default:"Não informado" }}</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Status:</span>
+                <span class="detail-value">
+                    <span class="badge badge-{% if contact.is_active %}success{% else %}danger{% endif %}">
+                        {% if contact.is_active %}Ativo{% else %}Inativo{% endif %}
+                    </span>
+                </span>
+            </div>
+            {% if contact.company %}
+            <div class="detail-row">
+                <span class="detail-label">Empresa Associada:</span>
+                <span class="detail-value">
+                    <a href="{% url 'contact_detail' contact.company.pk %}" class="link">{{ contact.company.name }}</a>
+                </span>
+            </div>
+            {% endif %}
+        </div>
     </div>
 
     <!-- Card de Endereços -->
     <div class="detail-card">
-        <h3>Endereços</h3>
-        {% for address in addresses %}
-            <div class="address-item">
-                <p><strong>{{ address.street }}, {{ address.number }}</strong></p>
-                <p>{{ address.neighborhood }} - {{ address.city }}/{{ address.state }}</p>
-                <p>CEP: {{ address.zip_code }}</p>
-            </div>
-            {% if not forloop.last %}<hr>{% endif %}
-        {% empty %}
-            <p>Nenhum endereço cadastrado.</p>
-        {% endfor %}
+        <div class="card-header">
+            <h3>Endereços</h3>
+        </div>
+        <div class="detail-content">
+            {% for address in addresses %}
+                <div class="address-item">
+                    <div class="address-main">
+                        <strong>{{ address.street }}, {{ address.number }}</strong>
+                    </div>
+                    <div class="address-details">
+                        {{ address.neighborhood }} - {{ address.city }}/{{ address.state }}
+                    </div>
+                    <div class="address-zip">
+                        CEP: {{ address.zip_code }}
+                    </div>
+                </div>
+                {% if not forloop.last %}<div class="divider"></div>{% endif %}
+            {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Nenhum endereço cadastrado.</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 
     <!-- Card de Contatos Associados (Apenas para PJ) -->
     {% if contact.person_type == 'PJ' %}
     <div class="detail-card full-width">
-        <h3>Contatos Associados a esta Empresa</h3>
-        <ul>
-        {% for associated in associated_contacts %}
-            <li><a href="{% url 'contact_detail' associated.pk %}">{{ associated.name }}</a> ({{ associated.email }})</li>
-        {% empty %}
-            <li>Nenhum contato associado.</li>
-        {% endfor %}
-        </ul>
+        <div class="card-header">
+            <h3>Contatos Associados a esta Empresa</h3>
+        </div>
+        <div class="detail-content">
+            {% for associated in associated_contacts %}
+                <div class="associated-contact">
+                    <div class="contact-info">
+                        <a href="{% url 'contact_detail' associated.pk %}" class="contact-name">
+                            {{ associated.name }}
+                        </a>
+                        <span class="contact-email">{{ associated.email }}</span>
+                    </div>
+                </div>
+                {% if not forloop.last %}<div class="divider"></div>{% endif %}
+            {% empty %}
+                <div class="empty-state">
+                    <i class="fas fa-users"></i>
+                    <p>Nenhum contato associado a esta empresa.</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
     {% endif %}
 </div>

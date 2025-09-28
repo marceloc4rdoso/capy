@@ -2,61 +2,147 @@
 {% block title %}{{ title }}{% endblock %}
 
 {% block app_content %}
-<form method="post" class="form-container" style="max-width: 1200px;">
+<div class="management-header">
+    <h1>{{ title }}</h1>
+    <div class="management-actions">
+        <a href="{% url 'contact_selection' transaction_type=transaction_type %}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left"></i> Voltar
+        </a>
+    </div>
+</div>
+
+<form method="post" class="form-container">
     {% csrf_token %}
-    <h2>{{ title }}</h2>
 
     <!-- Card de Informações do Contato -->
-    <div class="detail-card mb-4">
-        <h3>{{ transaction_type|slice:":-1"|capfirst }} Para: {{ contact.name }}</h3>
-        <p><strong>Documento:</strong> {{ contact.document|default:"-" }} | <strong>E-mail:</strong> {{ contact.email }} | <strong>Telefone:</strong> {{ contact.phone|default:"-" }}</p>
-        {% with contact.addresses.first as address %}
-            {% if address %}
-            <p><strong>Endereço:</strong> {{ address.street }}, {{ address.number }} - {{ address.city }}/{{ address.state }}</p>
-            {% endif %}
-        {% endwith %}
+    <div class="detail-card">
+        <div class="card-header">
+            <h3>{{ transaction_type|slice:":-1"|capfirst }} Para: {{ contact.name }}</h3>
+        </div>
+        <div class="detail-grid">
+            <div>
+                <p><strong>Documento:</strong> {{ contact.document|default:"-" }}</p>
+                <p><strong>E-mail:</strong> {{ contact.email }}</p>
+                <p><strong>Telefone:</strong> {{ contact.phone|default:"-" }}</p>
+            </div>
+            {% with contact.addresses.first as address %}
+                {% if address %}
+                <div>
+                    <p><strong>Endereço:</strong></p>
+                    <p>{{ address.street }}, {{ address.number }}</p>
+                    <p>{{ address.city }}/{{ address.state }}</p>
+                </div>
+                {% endif %}
+            {% endwith %}
+        </div>
     </div>
 
     <!-- Grade de Itens -->
-    <fieldset class="formset-container">
-        <legend>Itens da Transação</legend>
+    <div class="formset-container">
+        <div class="card-header">
+            <h3>Itens da Transação</h3>
+        </div>
         {{ formset.management_form }}
+        
+        <!-- Cabeçalho da tabela de itens -->
+        <div class="item-header">
+            <div class="item-header-grid">
+                <div><strong>Item/Produto</strong></div>
+                <div><strong>Quantidade</strong></div>
+                <div><strong>Preço Unitário</strong></div>
+                <div><strong>Total</strong></div>
+                <div><strong>Ações</strong></div>
+            </div>
+        </div>
+        
         <div id="item-formset">
             {% for form in formset %}
-            <div class="address-form item-row">
+            <div class="item-row">
                 {{ form.id }}
-                <div class="address-fields" style="grid-template-columns: 3fr 1fr 1fr 1fr 0.5fr;">
-                    <div class="form-group">{{ form.item }}</div>
-                    <div class="form-group">{{ form.quantity }}</div>
-                    <div class="form-group">{{ form.unit_price }}</div>
-                    <div class="form-group"><input type="text" class="form-control item-total" readonly></div>
-                    <div class="form-group delete-form">{% if form.instance.pk %}{{ form.DELETE }}{% endif %}</div>
+                <div class="item-fields">
+                    <div class="form-group">
+                        <label>{{ form.item.label }}</label>
+                        {{ form.item }}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ form.quantity.label }}</label>
+                        {{ form.quantity }}
+                    </div>
+                    <div class="form-group">
+                        <label>{{ form.unit_price.label }}</label>
+                        {{ form.unit_price }}
+                    </div>
+                    <div class="form-group">
+                        <label>Total</label>
+                        <input type="text" class="form-control item-total" readonly>
+                    </div>
+                    <div class="form-group">
+                        {% if form.instance.pk %}
+                            <label>Excluir</label>
+                            <div class="delete-form">
+                                {{ form.DELETE }}
+                                <label for="{{ form.DELETE.id_for_label }}">Remover</label>
+                            </div>
+                        {% else %}
+                            <button type="button" class="btn btn-danger btn-sm remove-item" style="margin-top: 24px;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        <button type="button" id="add-item-btn" class="btn btn-secondary mt-2">Adicionar Item</button>
-    </fieldset>
+        
+        <div class="form-actions">
+            <button type="button" id="add-item-btn" class="btn btn-secondary">
+                <i class="fas fa-plus"></i> Adicionar Item
+            </button>
+        </div>
+    </div>
 
     <!-- Seção de Totais -->
-    <div class="totals-section mt-4">
-        <div class="form-group">
-            <label for="subtotal">Subtotal</label>
-            <input type="text" id="subtotal" class="form-control" readonly>
+    <div class="totals-section">
+        <div class="card-header">
+            <h3>Resumo Financeiro</h3>
         </div>
-        <div class="form-group">{{ form.discount.label_tag }} {{ form.discount }}</div>
-        <div class="form-group">{{ form.additions.label_tag }} {{ form.additions }}</div>
-        <div class="form-group">
-            <label for="grand-total">Total Geral</label>
-            <input type="text" id="grand-total" class="form-control" readonly>
+        <div class="totals-grid">
+            <div class="total-item">
+                <label for="subtotal">Subtotal:</label>
+                <input type="text" id="subtotal" class="form-control" readonly>
+            </div>
+            <div class="total-item">
+                {{ form.discount.label_tag }}
+                {{ form.discount }}
+            </div>
+            <div class="total-item">
+                {{ form.additions.label_tag }}
+                {{ form.additions }}
+            </div>
+            <div class="total-item grand-total">
+                <label for="grand-total">Total Geral:</label>
+                <input type="text" id="grand-total" class="form-control" readonly>
+            </div>
         </div>
     </div>
     
-    {{ form.notes }}
+    <!-- Observações -->
+    <div class="form-group">
+        {{ form.notes.label_tag }}
+        {{ form.notes }}
+        {% if form.notes.help_text %}
+            <div class="form-text">{{ form.notes.help_text }}</div>
+        {% endif %}
+    </div>
 
+    <!-- Ações do Formulário -->
     <div class="form-actions">
-        <button type="submit" class="btn btn-save">Finalizar {{ transaction_type|slice:":-1"|capfirst }}</button>
-        <a href="{% url 'contact_selection' transaction_type=transaction_type %}" class="btn-cancel">Cancelar</a>
+        <button type="submit" class="btn btn-primary">
+            <i class="fas fa-save"></i> Finalizar {{ transaction_type|slice:":-1"|capfirst }}
+        </button>
+        <a href="{% url 'contact_selection' transaction_type=transaction_type %}" class="btn btn-secondary">
+            <i class="fas fa-times"></i> Cancelar
+        </a>
     </div>
 </form>
 

@@ -1,20 +1,24 @@
 import os
 from pathlib import Path
+from django.core.management.utils import get_random_secret_key
+import sys
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-g*z%z4uu*!fi0#7%d4#x4n_ig7swb(+ru)7o0us&z3mf8nv70l"
+# Usar variável de ambiente para SECRET_KEY ou gerar uma aleatória
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", get_random_secret_key())
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Usar variável de ambiente para DEBUG
+DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = []
+# Configuração de hosts permitidos
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
 
 # Application definition
@@ -41,7 +45,15 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "django.middleware.gzip.GZipMiddleware",  # Compressão de resposta
 ]
+
+# Configurações de segurança
+SECURE_CONTENT_TYPE_NOSNIFF = True
+SECURE_BROWSER_XSS_FILTER = True
+X_FRAME_OPTIONS = 'DENY'
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SECURE = not DEBUG
 
 ROOT_URLCONF = "core.urls"
 
@@ -50,6 +62,11 @@ CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "unique-snowflake",
+        "TIMEOUT": 300,  # 5 minutos de cache
+        "OPTIONS": {
+            "MAX_ENTRIES": 1000,  # Limitar número de entradas no cache
+            "CULL_FREQUENCY": 3,  # Frequência de limpeza do cache
+        },
     }
 }
 

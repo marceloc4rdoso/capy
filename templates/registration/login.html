@@ -4,24 +4,38 @@
 {% block title %}Login | Sistema de Gestão{% endblock %}
 
 {% block content %}
-<div class="login-form">
-    <h2>Acessar o Sistema</h2>
-    {% if form.errors %}
-        <p class="error-message">Seu usuário ou senha estão incorretos. Tente novamente.</p>
-    {% endif %}
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-logo">
+            <img src="{% static 'img/logo-system.fw.png' %}" alt="Logo Capy">
+        </div>
+        <h1 class="login-title">Acessar o Sistema</h1>
+        <h2 class="login-subtitle">Use sua conta Capy</h2>
+        
+        {% if form.errors %}
+            <div class="login-error">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <span>Seu usuário ou senha estão incorretos. Tente novamente.</span>
+            </div>
+        {% endif %}
 
-    <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="id_username">Usuário:</label>
-            {{ form.username }}
-        </div>
-        <div class="form-group">
-            <label for="id_password">Senha:</label>
-            {{ form.password }}
-        </div>
-        <button type="submit" class="btn">Login</button>
-        <input type="hidden" name="next" value="{{ next }}">
-    </form>
+        <form method="post" action="{% url 'login' %}" class="login-form">
+            {% csrf_token %}
+            <div class="form-floating">
+                <input type="text" name="username" id="id_username" class="form-control" placeholder="Usuário" required autofocus>
+                <label for="id_username">Usuário</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" name="password" id="id_password" class="form-control" placeholder="Senha" required>
+                <label for="id_password">Senha</label>
+            </div>
+            <button type="submit" class="login-button">Entrar</button>
+            <input type="hidden" name="next" value="{{ next }}">
+        </form>
+    </div>
 </div>
 {% endblock %}

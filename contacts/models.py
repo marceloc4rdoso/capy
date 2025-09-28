@@ -1,19 +1,34 @@
 # contacts/models.py
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.validators import RegexValidator
+from django.utils.translation import gettext_lazy as _
 
 
 class Contact(models.Model):
     class PersonType(models.TextChoices):
-        INDIVIDUAL = "PF", "Pessoa Física"
-        LEGAL = "PJ", "Pessoa Jurídica"
+        INDIVIDUAL = "PF", _("Pessoa Física")
+        LEGAL = "PJ", _("Pessoa Jurídica")
+    
+    class OrganizationType(models.TextChoices):
+        SYSTEM_HOLDER = "HOLDER", _("Gestor do Sistema")  # A sua empresa
+        CLIENT = "CLIENT", _("Cliente")  # As empresas clientes
+        OTHER = "OTHER", _("Outro")  # Outros tipos de contato PJ
 
-    user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True, blank=True)
-
-    name = models.CharField(max_length=255, verbose_name="Nome Completo")
+    # --- Informações Básicas ---
+    name = models.CharField(max_length=255, verbose_name=_("Nome Completo"))
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(
-        max_length=20, blank=True, null=True, verbose_name="Telefone"
+        max_length=20, 
+        blank=True, 
+        null=True, 
+        verbose_name=_("Telefone"),
+        validators=[
+            RegexValidator(
+                regex=r'^\+?1?\d{9,15}$',
+                message=_("O número de telefone deve estar no formato: '+999999999'. Até 15 dígitos permitidos.")
+            )
+        ]
     )
 
     # --- Campos de Identificação e Tipo ---
@@ -21,20 +36,27 @@ class Contact(models.Model):
         max_length=2,
         choices=PersonType.choices,
         default=PersonType.INDIVIDUAL,
-        verbose_name="Tipo de Pessoa",
+        verbose_name=_("Tipo de Pessoa"),
+        db_index=True,
     )
     document = models.CharField(
-        max_length=18, unique=True, blank=True, null=True, verbose_name="CPF/CNPJ"
+        max_length=18, 
+        unique=True, 
+        blank=True, 
+        null=True, 
+        verbose_name=_("CPF/CNPJ"),
+        db_index=True,
     )
 
     # --- Status e Associações ---
-    is_active = models.BooleanField(default=True, verbose_name="Ativo")
+    is_active = models.BooleanField(default=True, verbose_name=_("Ativo"))
     user = models.OneToOneField(
         User,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        verbose_name="Usuário Associado",
+        verbose_name=_("Usuário Associado"),
+        related_name="contact_profile",
     )
 
     # --- Relação entre Contatos (PJ -> PF) ---
