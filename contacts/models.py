@@ -9,7 +9,7 @@ class Contact(models.Model):
     class PersonType(models.TextChoices):
         INDIVIDUAL = "PF", _("Pessoa Física")
         LEGAL = "PJ", _("Pessoa Jurídica")
-    
+
     class OrganizationType(models.TextChoices):
         SYSTEM_HOLDER = "HOLDER", _("Gestor do Sistema")  # A sua empresa
         CLIENT = "CLIENT", _("Cliente")  # As empresas clientes
@@ -19,16 +19,18 @@ class Contact(models.Model):
     name = models.CharField(max_length=255, verbose_name=_("Nome Completo"))
     email = models.EmailField(max_length=255, unique=True)
     phone = models.CharField(
-        max_length=20, 
-        blank=True, 
-        null=True, 
+        max_length=20,
+        blank=True,
+        null=True,
         verbose_name=_("Telefone"),
         validators=[
             RegexValidator(
-                regex=r'^\+?1?\d{9,15}$',
-                message=_("O número de telefone deve estar no formato: '+999999999'. Até 15 dígitos permitidos.")
+                regex=r"^\+?1?\d{9,15}$",
+                message=_(
+                    "O número de telefone deve estar no formato: '+999999999'. Até 15 dígitos permitidos."
+                ),
             )
-        ]
+        ],
     )
 
     # --- Campos de Identificação e Tipo ---
@@ -40,10 +42,10 @@ class Contact(models.Model):
         db_index=True,
     )
     document = models.CharField(
-        max_length=18, 
-        unique=True, 
-        blank=True, 
-        null=True, 
+        max_length=18,
+        unique=True,
+        blank=True,
+        null=True,
         verbose_name=_("CPF/CNPJ"),
         db_index=True,
     )

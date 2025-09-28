@@ -41,15 +41,15 @@ class ContactSelectionView(LoginRequiredMixin, ListView):
         query = self.request.GET.get("q")
         if query:
             # Remove caracteres especiais do CNPJ/CPF para busca
-            clean_query = ''.join(c for c in query if c.isalnum())
-            
+            clean_query = "".join(c for c in query if c.isalnum())
+
             # Busca por nome, documento (com ou sem formatação) ou email
             queryset = queryset.filter(
-                Q(name__icontains=query) | 
-                Q(document__icontains=clean_query) |
-                Q(email__icontains=query)
+                Q(name__icontains=query)
+                | Q(document__icontains=clean_query)
+                | Q(email__icontains=query)
             ).distinct()
-            
+
             # Limita a 10 resultados para melhor desempenho
             return queryset[:10]
         return Contact.objects.none()  # Retorna lista vazia se não houver busca
@@ -61,16 +61,16 @@ class ContactSelectionView(LoginRequiredMixin, ListView):
         context["title"] = (
             f"Selecionar {'Cliente' if ttype == 'vendas' else 'Fornecedor'}"
         )
-        
+
         # Buscar os últimos pedidos (5 por padrão)
         num_orders = 5
         transaction_type = ttype.upper()
-        
+
         # Buscar os últimos pedidos do tipo especificado (compras ou vendas)
         latest_transactions = Transaction.objects.filter(
             transaction_type=transaction_type
-        ).order_by('-transaction_date')[:num_orders]
-        
+        ).order_by("-transaction_date")[:num_orders]
+
         context["latest_transactions"] = latest_transactions
         return context
 
